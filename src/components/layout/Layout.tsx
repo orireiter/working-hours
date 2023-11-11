@@ -1,22 +1,24 @@
 import { JSX } from "react";
 import { useDisclosure } from '@mantine/hooks';
-import { AppShell, Group, Burger, Title } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 
-import { AppIcon } from "./components/AppIcon";
+import { Header } from "./components/Header";
+import { Navbar } from "./components/Navbar";
 
-export function Layout(props: { children: JSX.Element} ) {
-  const [opened, { toggle }] = useDisclosure();
+export function Layout(props: {children: JSX.Element} ) {
+  const [isNavbarOpened, { toggle: toggleNavbarOpen }] = useDisclosure();
 
   return (
       <AppShell
-        header={{ height: 60 }}>
+        header={{ height: 60 }}
+        navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: !isNavbarOpened, mobile: !isNavbarOpened}}}
+        padding="md">
           <AppShell.Header>
-            <Group h="100%" px="md">
-              <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-              <AppIcon/>
-              <Title>!SITE_NAME!</Title>
-            </Group>
+            <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
           </AppShell.Header>
+          <AppShell.Navbar p="md">
+            <Navbar />
+          </AppShell.Navbar>
           <AppShell.Main>
             {props.children}
           </AppShell.Main>
