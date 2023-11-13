@@ -12,14 +12,15 @@ export function Layout(props: {children: JSX.Element} ) {
       <AppShell
         header={{ height: 60 }}
         navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: !isNavbarOpened, mobile: !isNavbarOpened}}}
-        padding="md">
+        padding="md"
+        zIndex={1}>
           <AppShell.Header>
             <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
           </AppShell.Header>
           <AppShell.Navbar p="md">
             <Navbar />
           </AppShell.Navbar>
-          <AppShell.Main>
+          <AppShell.Main pl={'0'}>
             {props.children}
           </AppShell.Main>
       </AppShell>
