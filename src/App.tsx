@@ -1,17 +1,19 @@
 import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 
-import { Layout } from './components/layout/Layout';
+import { Layout } from './pages/layout/Layout.page';
 import { Login } from './pages/login/Login.page'
-
 
 function App() {
   return (
-    <MantineProvider defaultColorScheme="dark">
-      <Layout>
-            <Login />
-      </Layout>
-    </ MantineProvider>
+    <>
+      <ColorSchemeScript defaultColorScheme="auto" />
+      <MantineProvider defaultColorScheme="auto">
+        <Layout>
+          <Login />
+        </Layout>
+      </ MantineProvider>
+    </>
   )
 }
 
