@@ -1,11 +1,21 @@
-import { JSX } from "react"
-import { AppShell, Skeleton, ScrollArea } from "@mantine/core"
+import { AppShell, Skeleton, ScrollArea, Group } from "@mantine/core";
+
+import { ThemeToggle } from "../../../components/ThemeToggle";
+import { SettingsButton } from "../../../components/SettingsButton";
 
 
-export function Navbar(props: { footer?: JSX.Element}) {
+function NavbarFooter() {
+    return (
+    <Group justify="space-between" gap="sm">
+        <SettingsButton onClick={() => {}}/>
+        <ThemeToggle/>
+    </Group>);
+}
+
+
+export function Navbar() {
     return (
         <>
-            <AppShell.Section>Navbar header</AppShell.Section>
             <AppShell.Section grow my="md" component={ScrollArea}>
             60 links in a scrollable section
             {Array(15)
@@ -14,7 +24,9 @@ export function Navbar(props: { footer?: JSX.Element}) {
                 <Skeleton key={index} h={"2rem"} mt="sm" />
                 ))}
             </AppShell.Section>
-            {props.footer ? <AppShell.Section>{props.footer}</AppShell.Section> : null}
+            <AppShell.Section>
+                <NavbarFooter />
+            </AppShell.Section>
         </>
     )
 }

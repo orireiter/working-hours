@@ -12,7 +12,7 @@ import {
   Checkbox,
   Anchor,
   Stack,
-  Center
+  Container
 } from '@mantine/core';
 
 
@@ -26,7 +26,7 @@ export function Login(props: PaperProps) {
       email: '',
       name: '',
       password: '',
-      terms: true,
+      terms: false,
     },
 
     validate: {
@@ -36,7 +36,7 @@ export function Login(props: PaperProps) {
   });
 
   return (
-    <Center>
+    <Container size="30rem">
         <Paper radius="md" p="xl" withBorder {...props}>
             <Text size="lg" fw={500}>
                 Welcome to !SITE_NAME!, {type} with
@@ -63,7 +63,7 @@ export function Login(props: PaperProps) {
                 <TextInput
                     required
                     label="Email"
-                    placeholder="hello@mantine.dev"
+                    placeholder="hello@!SITE_NAME!.com"
                     value={form.values.email}
                     onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                     error={form.errors.email && 'Invalid email'}
@@ -101,6 +101,6 @@ export function Login(props: PaperProps) {
                 </Group>
             </form>
         </Paper>
-    </ Center>
+    </ Container>
   );
 }
