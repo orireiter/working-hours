@@ -1,12 +1,16 @@
 import { JSX } from "react";
 import { useDisclosure } from '@mantine/hooks';
-import { AppShell } from "@mantine/core";
+import { AppShell, Group } from "@mantine/core";
 
 import { Header } from "./components/Header";
 import { Navbar } from "./components/Navbar";
+import { ThemeToggle } from "./components/ThemeToggle";
+
 
 export function Layout(props: {children: JSX.Element} ) {
   const [isNavbarOpened, { toggle: toggleNavbarOpen }] = useDisclosure();
+
+  const navbarFooter = <Group><ThemeToggle/></Group>;
 
   return (
       <AppShell
@@ -18,9 +22,9 @@ export function Layout(props: {children: JSX.Element} ) {
             <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
           </AppShell.Header>
           <AppShell.Navbar p="md">
-            <Navbar />
+            <Navbar footer={navbarFooter}/>
           </AppShell.Navbar>
-          <AppShell.Main pl={'0'}>
+          <AppShell.Main px={'5%'}>
             {props.children}
           </AppShell.Main>
       </AppShell>

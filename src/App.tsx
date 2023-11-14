@@ -1,7 +1,7 @@
 import '@mantine/core/styles.css';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 
-import { Layout } from './components/layout/Layout';
+import { Layout } from './pages/layout/Layout.page';
 import { Login } from './pages/login/Login.page'
 
 function App() {

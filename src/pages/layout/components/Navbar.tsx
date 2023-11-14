@@ -1,6 +1,8 @@
+import { JSX } from "react"
 import { AppShell, Skeleton, ScrollArea } from "@mantine/core"
 
-export function Navbar() {
+
+export function Navbar(props: { footer?: JSX.Element}) {
     return (
         <>
             <AppShell.Section>Navbar header</AppShell.Section>
@@ -12,7 +14,7 @@ export function Navbar() {
                 <Skeleton key={index} h={"2rem"} mt="sm" />
                 ))}
             </AppShell.Section>
-            <AppShell.Section>Navbar footer – always at the bottom</AppShell.Section>
+            {props.footer ? <AppShell.Section>{props.footer}</AppShell.Section> : null}
         </>
     )
 }
