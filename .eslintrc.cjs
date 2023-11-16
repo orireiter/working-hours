@@ -39,7 +39,8 @@ module.exports = {
           "newlines-between": "always",
         },
     ],
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "eol-last": ["error", "always"],
   },
   parserOptions: {
     ecmaVersion: 'latest',
