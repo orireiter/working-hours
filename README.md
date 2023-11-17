@@ -46,9 +46,25 @@
    <summary>2. Placeholders To Switch</summary>
    
    1. !SITE_NAME!
+   2. !TERMS_AND_CONDITIONS_URL!
 </details>
 <details>
    <summary>3. Add real file and remove from gitignore</summary>
    
    1. public/icon.png
 </details>
+
+# Features
+1. make basic pages:
+    1. login
+    2. signup
+    3. homepage
+2. add nightmode support
+2. add mobile support
+2. implement routing
+3. try to add boundaries to 3rd party libraries
+3. make it pluggable to other services easily
+3. make it easy to add new pages
+4. make a configuration file to specify what to use of the site:
+    1. which pages to show and whether they require authentication.
+    2. site name.
