@@ -18,9 +18,9 @@ export function Authentication(props: PaperProps) {
 
     let authenticationForm: JSX.Element;
     if (authenticationType === AuthenticationType.SIGN_UP) {
-        authenticationForm = <RegisterForm onSubmitFunction={() => {}} moveToLoginFunction={toggleAuthenticationType}/>;
+        authenticationForm = <RegisterForm moveToLoginFunction={toggleAuthenticationType}/>;
     } else {
-        authenticationForm = <LoginForm onSubmitFunction={() => {}} moveToRegisterFunction={toggleAuthenticationType} />;
+        authenticationForm = <LoginForm moveToRegisterFunction={toggleAuthenticationType} />;
     }
 
     return (

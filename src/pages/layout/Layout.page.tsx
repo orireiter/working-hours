@@ -7,12 +7,12 @@ import { Navbar } from './components/Navbar';
 
 
 export function Layout(props: { children: JSX.Element }) {
-    const [isNavbarOpened, { toggle: toggleNavbarOpen }] = useDisclosure();
+    const [isNavbarOpened, { close, toggle: toggleNavbarOpen }] = useDisclosure();
 
     return (
         <AppShell
             header={{ height: 60 }}
-            navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: !isNavbarOpened, mobile: !isNavbarOpened } }}
+            navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: !isNavbarOpened, mobile: !isNavbarOpened }}}
             padding='md'
             zIndex={1}>
             <AppShell.Header>
@@ -21,7 +21,7 @@ export function Layout(props: { children: JSX.Element }) {
             <AppShell.Navbar p='md'>
                 <Navbar />
             </AppShell.Navbar>
-            <AppShell.Main px={'5%'}>
+            <AppShell.Main px={'5%'} onClick={() => close()}>
                 {props.children}
             </AppShell.Main>
         </AppShell>

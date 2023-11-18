@@ -3,10 +3,10 @@ import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine/core';
 
 import { isEmailValid, isPasswordValid } from '../../../utils';
+import { useLogin } from '../../../hooks/auth.hooks';
 
 
 interface LoginFormProps {
-    onSubmitFunction: () => void;
     moveToRegisterFunction: () => void;
     initialEmail?: string;
     initialPassword?: string;
@@ -14,6 +14,8 @@ interface LoginFormProps {
 
 
 export function LoginForm(props: LoginFormProps) {
+    const login = useLogin();
+
     const form = useForm({
         initialValues: {
             email: props.initialEmail ?? '',
@@ -27,7 +29,7 @@ export function LoginForm(props: LoginFormProps) {
     });
 
     return (
-        <form onSubmit={form.onSubmit(() => props.onSubmitFunction())}>
+        <form onSubmit={form.onSubmit((values) => void login(values.email, values.password))}>
             <Stack>
 
                 <TextInput

@@ -26,3 +26,13 @@ export function useAuthSession() {
 
     return authenticationStore.isAuthenticated;
 }
+
+// todo turn this later into a factory function for email/google/etc sign in options
+export function useLogin() {
+    return (email: string, password: string) => AuthenticationService.Login.emailPasswordLogin(email, password);
+}
+
+// todo turn this later into a factory function for email/google/etc register in options
+export function useRegister() {
+    return (email: string, password: string, name?: string) => AuthenticationService.Register.emailPasswordRegister(email, password, name);
+}
