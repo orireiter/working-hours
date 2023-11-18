@@ -9,21 +9,26 @@ function NavbarFooter(props: {closeNavbar: () => void}) {
     const isAuthenticated = useAuthSession();
     const logout = useLogout();
 
+    let logoutIcon = null;
+    if(isAuthenticated) {
+        logoutIcon = (<ActionIcon onClick={() => {
+            void logout();
+            props.closeNavbar();
+        }}
+        variant='default'
+        size='xl'
+        aria-label='log out'
+        radius={10}>
+            <Tooltip label='log out' offset={0} position='top'>
+                <IconLogout stroke={1.5} />
+            </Tooltip>
+        </ActionIcon>);
+    } 
+
     return (
         <Group justify='space-between' gap='sm'>
             <ThemeToggle />
-            {isAuthenticated ? <ActionIcon onClick={() => {
-                void logout();
-                props.closeNavbar();
-            }}
-            variant='default'
-            size='xl'
-            aria-label='log out'
-            radius={10}>
-                <Tooltip label='log out' offset={0} position='top'>
-                    <IconLogout stroke={1.5} />
-                </Tooltip>
-            </ActionIcon> : null}
+            {logoutIcon}
         </Group>);
 }
 

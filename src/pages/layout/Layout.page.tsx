@@ -7,7 +7,7 @@ import { Navbar } from './components/Navbar';
 
 
 export function Layout(props: { children: JSX.Element }) {
-    const [isNavbarOpened, { close, toggle: toggleNavbarOpen }] = useDisclosure();
+    const [isNavbarOpened, { close: closeNavbar, toggle: toggleNavbarOpen }] = useDisclosure();
 
     return (
         <AppShell
@@ -19,9 +19,9 @@ export function Layout(props: { children: JSX.Element }) {
                 <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
             </AppShell.Header>
             <AppShell.Navbar p='md'>
-                <Navbar closeNavbar={close}/>
+                <Navbar closeNavbar={closeNavbar}/>
             </AppShell.Navbar>
-            <AppShell.Main px={'5%'} onClick={() => close()}>
+            <AppShell.Main px={'5%'} onClick={() => closeNavbar()}>
                 {props.children}
             </AppShell.Main>
         </AppShell>
