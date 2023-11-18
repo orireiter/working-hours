@@ -19,7 +19,7 @@ export function Layout(props: { children: JSX.Element }) {
                 <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
             </AppShell.Header>
             <AppShell.Navbar p='md'>
-                <Navbar />
+                <Navbar closeNavbar={close}/>
             </AppShell.Navbar>
             <AppShell.Main px={'5%'} onClick={() => close()}>
                 {props.children}

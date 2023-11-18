@@ -36,3 +36,7 @@ export function useLogin() {
 export function useRegister() {
     return (email: string, password: string, name?: string) => AuthenticationService.Register.emailPasswordRegister(email, password, name);
 }
+
+export function useLogout() {
+    return () => AuthenticationService.logout();
+}

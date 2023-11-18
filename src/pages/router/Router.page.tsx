@@ -6,7 +6,7 @@ import { useAuthSession } from '../../hooks/auth.hooks';
 import { Redirect } from './components/Redirect';
 
 
-interface Route {
+export interface Route {
     path: string;
     element: JSX.Element;
 }

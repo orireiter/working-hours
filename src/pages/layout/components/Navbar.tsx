@@ -1,23 +1,37 @@
-import { AppShell, Skeleton, ScrollArea, Group } from '@mantine/core';
+import { AppShell, Skeleton, ScrollArea, Group, ActionIcon, Tooltip } from '@mantine/core';
+import { IconLogout } from '@tabler/icons-react';
 
 import { ThemeToggle } from '../../../components/ThemeToggle';
-import { SettingsButton } from '../../../components/SettingsButton';
+import { useLogout, useAuthSession } from '../../../hooks/auth.hooks';
 
 
-function NavbarFooter() {
+function NavbarFooter(props: {closeNavbar: () => void}) {
+    const isAuthenticated = useAuthSession();
+    const logout = useLogout();
+
     return (
         <Group justify='space-between' gap='sm'>
-            <SettingsButton onClick={() => { }} />
             <ThemeToggle />
+            {isAuthenticated ? <ActionIcon onClick={() => {
+                void logout();
+                props.closeNavbar();
+            }}
+            variant='default'
+            size='xl'
+            aria-label='log out'
+            radius={10}>
+                <Tooltip label='log out' offset={0} position='top'>
+                    <IconLogout stroke={1.5} />
+                </Tooltip>
+            </ActionIcon> : null}
         </Group>);
 }
 
 
-export function Navbar() {
+export function Navbar(props: {closeNavbar: () => void}) {
     return (
         <>
             <AppShell.Section grow my='md' component={ScrollArea}>
-                60 links in a scrollable section
                 {Array(15)
                     .fill(0)
                     .map((_, index) => (
@@ -25,7 +39,7 @@ export function Navbar() {
                     ))}
             </AppShell.Section>
             <AppShell.Section>
-                <NavbarFooter />
+                <NavbarFooter closeNavbar={props.closeNavbar}/>
             </AppShell.Section>
         </>
     );

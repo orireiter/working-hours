@@ -2,12 +2,12 @@ import '@mantine/core/styles.css';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 
 import { Layout } from './pages/layout/Layout.page';
-import { Router } from './pages/router/Router.page';
+import { Router, Route } from './pages/router/Router.page';
 import { Authentication } from './pages/authentication/Authentication.page';
 import { Home } from './pages/home/Home.page';
 
 
-const authenticatedRoutes = [
+const authenticatedRoutes: Route[] = [
     {
         path: '/',
         element: <Home />,
