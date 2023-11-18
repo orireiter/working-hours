@@ -3,10 +3,10 @@ import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button, Checkbox } from '@mantine/core';
 
 import { isEmailValid, isPasswordValid } from '../../../utils';
+import { useRegister } from '../../../hooks/auth.hooks';
 
 
 interface RegisterFormProps {
-    onSubmitFunction: () => void;
     moveToLoginFunction: () => void;
     initialEmail?: string;
     initialPassword?: string;
@@ -16,6 +16,8 @@ interface RegisterFormProps {
 
 
 export function RegisterForm(props: RegisterFormProps) {
+    const register = useRegister();
+
     const form = useForm({
         initialValues: {
             email: props.initialEmail ?? '',
@@ -27,6 +29,7 @@ export function RegisterForm(props: RegisterFormProps) {
         validate: {
             email: (val) => !isEmailValid(val),
             password: (val) => !isPasswordValid(val),
+            terms: (val) => !val
         },
     });
 
@@ -39,7 +42,7 @@ export function RegisterForm(props: RegisterFormProps) {
     );
 
     return (
-        <form onSubmit={form.onSubmit(() => props.onSubmitFunction())}>
+        <form onSubmit={form.onSubmit((values) => void register(values.email, values.password))}>
             <Stack>
                 <TextInput
                     label='Name'
@@ -73,6 +76,7 @@ export function RegisterForm(props: RegisterFormProps) {
                     label={termsLabel}
                     checked={form.values.terms}
                     onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+                    error={form.errors.terms && 'You must accept the terms and conditions'}
                 />
 
             </Stack>

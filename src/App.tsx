@@ -1,35 +1,39 @@
 import '@mantine/core/styles.css';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { useAuthSession } from './hooks/auth.hooks';
 import { Layout } from './pages/layout/Layout.page';
-import { Login } from './pages/login/Login.page';
+import { Router, Route } from './pages/router/Router.page';
+import { Authentication } from './pages/authentication/Authentication.page';
 import { Home } from './pages/home/Home.page';
 
 
-const router = createBrowserRouter([
-    {
-        path: '/login',
-        element: <Login />,
-    },
+const authenticatedRoutes: Route[] = [
     {
         path: '/',
         element: <Home />,
     }
-]);
+];
+
+const notAuthenticatedRoutes = [
+    {
+        path: '/login',
+        element: <Authentication />,
+    }
+];
 
 
 function App() {
-    const isAuthenticated = useAuthSession();
-    console.log(isAuthenticated);
-
     return (
         <>
             <ColorSchemeScript defaultColorScheme='auto' />
             <MantineProvider defaultColorScheme='auto'>
                 <Layout>
-                    <RouterProvider router={router} />
+                    <Router 
+                        authenticatedRoutes={authenticatedRoutes} 
+                        notAuthenticatedRoutes={notAuthenticatedRoutes}
+                        defaultAuthenticatedURL='/'
+                        defaultNotAuthenticatedURL='/login'
+                    />
                 </Layout>
             </ MantineProvider>
         </>

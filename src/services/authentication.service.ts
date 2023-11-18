@@ -34,7 +34,7 @@ export class AuthenticationService {
     };
 
     static Register = class { 
-        static async emailPasswordRegister(email: string, password: string){
+        static async emailPasswordRegister(email: string, password: string, name?: string){
             AuthenticationSessionStateChangeEvent.emit(true);
         }
     };

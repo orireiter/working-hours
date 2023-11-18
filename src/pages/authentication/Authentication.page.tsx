@@ -13,14 +13,14 @@ enum AuthenticationType {
 }
 
 
-export function Login(props: PaperProps) {
+export function Authentication(props: PaperProps) {
     const [authenticationType, toggleAuthenticationType] = useToggle<AuthenticationType>([AuthenticationType.SIGN_IN, AuthenticationType.SIGN_UP]);
 
     let authenticationForm: JSX.Element;
     if (authenticationType === AuthenticationType.SIGN_UP) {
-        authenticationForm = <RegisterForm onSubmitFunction={() => {}} moveToLoginFunction={toggleAuthenticationType}/>;
+        authenticationForm = <RegisterForm moveToLoginFunction={toggleAuthenticationType}/>;
     } else {
-        authenticationForm = <LoginForm onSubmitFunction={() => {}} moveToRegisterFunction={toggleAuthenticationType} />;
+        authenticationForm = <LoginForm moveToRegisterFunction={toggleAuthenticationType} />;
     }
 
     return (
