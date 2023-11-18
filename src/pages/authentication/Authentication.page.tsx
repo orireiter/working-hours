@@ -13,7 +13,7 @@ enum AuthenticationType {
 }
 
 
-export function Login(props: PaperProps) {
+export function Authentication(props: PaperProps) {
     const [authenticationType, toggleAuthenticationType] = useToggle<AuthenticationType>([AuthenticationType.SIGN_IN, AuthenticationType.SIGN_UP]);
 
     let authenticationForm: JSX.Element;
