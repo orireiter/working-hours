@@ -1,9 +1,11 @@
 import { upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
 import { isEmailValid, isPasswordValid } from '../../../utils';
 import { useLogin } from '../../../hooks/auth.hooks';
+import { CustomError } from '../../../models/errors.models';
 
 
 interface LoginFormProps {
@@ -28,8 +30,28 @@ export function LoginForm(props: LoginFormProps) {
         },
     });
 
+    const formSubmitFunction = form.onSubmit((values) => {
+        login(values.email, values.password)
+            .catch((error) => {
+                let errorMessage = null;
+                let errorId = 'login-error';
+
+                if (error instanceof CustomError) {
+                    errorMessage = error.message;
+                    errorId = error.id;
+                }
+
+                notifications.show({
+                    id: errorId,
+                    title: 'Failed to login',
+                    message: errorMessage,
+                });
+            });
+    });
+
+
     return (
-        <form onSubmit={form.onSubmit((values) => void login(values.email, values.password))}>
+        <form onSubmit={formSubmitFunction}>
             <Stack>
 
                 <TextInput
