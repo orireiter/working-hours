@@ -1,5 +1,9 @@
 import '@mantine/core/styles.css';
+import '@mantine/spotlight/styles.css';
+import '@mantine/notifications/styles.css';
+
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 
 import { Layout } from './pages/layout/Layout.page';
 import { Router, Route } from './pages/router/Router.page';
@@ -27,6 +31,7 @@ function App() {
         <>
             <ColorSchemeScript defaultColorScheme='auto' />
             <MantineProvider defaultColorScheme='auto'>
+                <Notifications />
                 <Layout>
                     <Router 
                         authenticatedRoutes={authenticatedRoutes} 

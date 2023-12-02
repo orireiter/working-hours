@@ -3,7 +3,8 @@ import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine/core';
 
 import { isEmailValid, isPasswordValid } from '../../../utils';
-import { useLogin } from '../../../hooks/auth.hooks';
+import { useLogin } from '../../../hooks/authentication.hooks';
+
 
 
 interface LoginFormProps {

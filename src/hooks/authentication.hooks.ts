@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { useAuthenticationStore } from '../stores/authentication.store';
 import { AuthenticationService, onAuthenticationSessionStateChanged } from '../services/authentication.service';
+import { notifyError } from '../logic/notifications.logic';
 
 
 export function useAuthSession() {
@@ -13,7 +14,9 @@ export function useAuthSession() {
                 const isAuthenticated = session ? true : false;
                 authenticationStore.setIsAuthenticated(isAuthenticated);
             })
-            .catch((error) => {});
+            .catch((error) => {
+                notifyError(error);
+            });
 
         const removeListener = onAuthenticationSessionStateChanged((authEvent) => {
             authenticationStore.setIsAuthenticated(authEvent.isAuthenticated);
@@ -29,14 +32,33 @@ export function useAuthSession() {
 
 // todo turn this later into a factory function for email/google/etc sign in options
 export function useLogin() {
-    return (email: string, password: string) => AuthenticationService.Login.emailPasswordLogin(email, password);
+    return async (email: string, password: string) => {
+        try {
+            await AuthenticationService.Login.emailPasswordLogin(email, password);
+        } catch (error) {
+            notifyError(error);
+        }
+    };
 }
 
 // todo turn this later into a factory function for email/google/etc register in options
 export function useRegister() {
-    return (email: string, password: string, name?: string) => AuthenticationService.Register.emailPasswordRegister(email, password, name);
+    return async (email: string, password: string, name?: string) => {
+        try {
+            await AuthenticationService.Register.emailPasswordRegister(email, password, name);
+        } catch (error) { 
+            notifyError(error);
+        }
+        
+    };
 }
 
 export function useLogout() {
-    return () => AuthenticationService.logout();
+    return async () => {
+        try {
+            await AuthenticationService.logout();
+        } catch (error) {
+            notifyError(error);
+        }   
+    };
 }

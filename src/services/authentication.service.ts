@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
 
+import { NotImplementedError } from '../models/errors.models';
+
 
 type AuthenticationSessionStateChangeEventCallback = (event: {isAuthenticated: boolean}) => void;
 
@@ -29,22 +31,26 @@ class AuthenticationSessionStateChangeEvent{
 export class AuthenticationService {
     static Login = class {
         static async emailPasswordLogin(email: string, password: string){
-            AuthenticationSessionStateChangeEvent.emit(true);
+            // AuthenticationSessionStateChangeEvent.emit(true);
+            throw new NotImplementedError(`${this.name}.${this.emailPasswordLogin.name}`);
         }
     };
 
     static Register = class { 
         static async emailPasswordRegister(email: string, password: string, name?: string){
             AuthenticationSessionStateChangeEvent.emit(true);
+            throw new NotImplementedError(`${this.name}.${this.emailPasswordRegister.name}`);
         }
     };
 
     static async logout() {
         AuthenticationSessionStateChangeEvent.emit(false);
+        throw new NotImplementedError(`${this.name}.${this.logout.name}`);
     }
     
     static async getAuthenticationSession() {
         return null;
+        throw new NotImplementedError(`${this.name}.${this.getAuthenticationSession.name}`);
     }
 }
 

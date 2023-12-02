@@ -2,7 +2,7 @@ import { AppShell, Skeleton, ScrollArea, Group, ActionIcon, Tooltip } from '@man
 import { IconLogout } from '@tabler/icons-react';
 
 import { ThemeToggle } from '../../../components/ThemeToggle';
-import { useLogout, useAuthSession } from '../../../hooks/auth.hooks';
+import { useLogout, useAuthSession } from '../../../hooks/authentication.hooks';
 
 
 function NavbarFooter(props: {closeNavbar: () => void}) {
