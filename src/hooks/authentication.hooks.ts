@@ -14,7 +14,9 @@ export function useAuthSession() {
                 const isAuthenticated = session ? true : false;
                 authenticationStore.setIsAuthenticated(isAuthenticated);
             })
-            .catch((error) => {});
+            .catch((error) => {
+                notifyError(error);
+            });
 
         const removeListener = onAuthenticationSessionStateChanged((authEvent) => {
             authenticationStore.setIsAuthenticated(authEvent.isAuthenticated);
@@ -41,9 +43,22 @@ export function useLogin() {
 
 // todo turn this later into a factory function for email/google/etc register in options
 export function useRegister() {
-    return (email: string, password: string, name?: string) => AuthenticationService.Register.emailPasswordRegister(email, password, name);
+    return async (email: string, password: string, name?: string) => {
+        try {
+            await AuthenticationService.Register.emailPasswordRegister(email, password, name);
+        } catch (error) { 
+            notifyError(error);
+        }
+        
+    };
 }
 
 export function useLogout() {
-    return () => AuthenticationService.logout();
+    return async () => {
+        try {
+            await AuthenticationService.logout();
+        } catch (error) {
+            notifyError(error);
+        }   
+    };
 }
