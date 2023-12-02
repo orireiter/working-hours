@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { useAuthSession } from '../../hooks/auth.hooks';
+import { useAuthSession } from '../../hooks/authentication.hooks';
 
 import { Redirect } from './components/Redirect';
 
