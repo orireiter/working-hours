@@ -71,7 +71,23 @@
     1. which pages to show and whether they require authentication.
     2. site name.
 5. make a list of everything that needs to be made for this to work (list of functions/placeholders/etc...).
-6. make it so any request to backend that determines you're logged out (401 for example), will update whatever is needed (the store).
-7. add basic popups + organize with enum and such
+6. make it so any request to backend that determines you're logged out (401 for example), will update whatever is needed (the store) (intercept requests).
+7. add basic popups + organize with enum and such ✅
 8. add whole screen loading (spotlight)
-9. add easy websocket connections
+9. add easy websocket connections ✅
+
+# Layers (bottom-to-top)
+```mermaid
+    graph TD;
+        models-->services;
+        models-->logic;
+        models-->hooks;
+        models-->components;
+        models-->pages;
+        stores --> hooks;
+        services-->logic;
+        services-->hooks;
+        logic-->hooks;
+        components-->pages;
+        hooks-->pages;
+```
