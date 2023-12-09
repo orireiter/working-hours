@@ -2,6 +2,7 @@ import { upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine/core';
 
+import configurations from '../../../configurations.json';
 import { isEmailValid, isPasswordValid } from '../../../utils';
 import { useLogin } from '../../../hooks/authentication.hooks';
 
@@ -36,7 +37,7 @@ export function LoginForm(props: LoginFormProps) {
                 <TextInput
                     required
                     label='Email'
-                    placeholder='hello@!SITE_NAME!.com'
+                    placeholder={`hello@${configurations.siteName}.com`}
                     value={form.values.email}
                     onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                     error={form.errors.email && 'Invalid email'}

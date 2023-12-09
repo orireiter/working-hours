@@ -44,25 +44,14 @@
 </details>
 <details>
    <summary>2. Placeholders To Switch</summary>
-   
-   1. !SITE_NAME!
+
    2. !TERMS_AND_CONDITIONS_URL!
 </details>
-<details>
-   <summary>3. Add real file and remove from gitignore</summary>
-   
-   1. public/icon.png
-</details>
+
 
 # Features
 1. make basic pages:
-    1. login ✅
-    2. signup ✅
-    3. homepage ✅
-    4. navbar
-2. add nightmode support ✅
-2. add mobile support ✅
-2. implement routing ✅
+    1. navbar
 2. decide how to add data to the navbar
 3. try to add boundaries to 3rd party libraries
 3. make it pluggable to other services easily
@@ -72,9 +61,9 @@
     2. site name.
 5. make a list of everything that needs to be made for this to work (list of functions/placeholders/etc...).
 6. make it so any request to backend that determines you're logged out (401 for example), will update whatever is needed (the store) (intercept requests).
-7. add basic popups + organize with enum and such ✅
 8. add whole screen loading (spotlight)
-9. add easy websocket connections ✅
+9. add right-to-left support
+
 
 # Layers (bottom-to-top)
 ```mermaid

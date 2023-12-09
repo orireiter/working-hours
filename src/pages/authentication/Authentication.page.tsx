@@ -2,6 +2,8 @@ import { JSX } from 'react';
 import { useToggle } from '@mantine/hooks';
 import { Text, Paper, Group, PaperProps, Divider, Container } from '@mantine/core';
 
+import configurations from '../../configurations.json';
+
 import { GoogleButton } from './components/GoogleButton';
 import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
@@ -18,7 +20,7 @@ export function Authentication(props: PaperProps) {
 
     let authenticationForm: JSX.Element;
     if (authenticationType === AuthenticationType.SIGN_UP) {
-        authenticationForm = <RegisterForm moveToLoginFunction={toggleAuthenticationType}/>;
+        authenticationForm = <RegisterForm moveToLoginFunction={toggleAuthenticationType} />;
     } else {
         authenticationForm = <LoginForm moveToRegisterFunction={toggleAuthenticationType} />;
     }
@@ -27,7 +29,7 @@ export function Authentication(props: PaperProps) {
         <Container size='30rem'>
             <Paper radius='md' p='xl' withBorder {...props}>
                 <Text size='lg' fw={500}>
-                    Welcome to !SITE_NAME!, {authenticationType} with
+                    Welcome to {configurations.siteName}, {authenticationType} with
                 </Text>
 
                 <Group grow mb='md' mt='md'>
