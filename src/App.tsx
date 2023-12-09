@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/notifications/styles.css';
 
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript, DirectionProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 
 import { Layout } from './pages/layout/Layout.page';
@@ -30,17 +30,19 @@ function App() {
     return (
         <>
             <ColorSchemeScript defaultColorScheme='auto' />
-            <MantineProvider defaultColorScheme='auto'>
-                <Notifications />
-                <Layout>
-                    <Router 
-                        authenticatedRoutes={authenticatedRoutes} 
-                        notAuthenticatedRoutes={notAuthenticatedRoutes}
-                        defaultAuthenticatedURL='/'
-                        defaultNotAuthenticatedURL='/login'
-                    />
-                </Layout>
-            </ MantineProvider>
+            <DirectionProvider initialDirection='rtl'>
+                <MantineProvider defaultColorScheme='auto'>
+                    <Notifications />
+                    <Layout>
+                        <Router 
+                            authenticatedRoutes={authenticatedRoutes} 
+                            notAuthenticatedRoutes={notAuthenticatedRoutes}
+                            defaultAuthenticatedURL='/'
+                            defaultNotAuthenticatedURL='/login'
+                        />
+                    </Layout>
+                </ MantineProvider>
+            </DirectionProvider>
         </>
     );
 }
