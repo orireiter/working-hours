@@ -5,10 +5,11 @@ import { AuthenticationService, onAuthenticationSessionStateChanged } from '../s
 import { notifyError } from '../logic/notifications.logic';
 
 
+
 export function useAuthSession() {
     const authenticationStore = useAuthenticationStore();
 
-    useEffect(() => {
+    const setStoreAuthentication = () => {
         AuthenticationService.getAuthenticationSession()
             .then((session) => {
                 const isAuthenticated = session ? true : false;
@@ -17,15 +18,17 @@ export function useAuthSession() {
             .catch((error) => {
                 notifyError(error);
             });
+    };
 
-        const removeListener = onAuthenticationSessionStateChanged((authEvent) => {
-            authenticationStore.setIsAuthenticated(authEvent.isAuthenticated);
+    useEffect(() => {
+        setStoreAuthentication();
+
+        const removeListener = onAuthenticationSessionStateChanged(() => {
+            setStoreAuthentication();
         });
 
         return () => removeListener();
     }, []);
-
-
 
     return authenticationStore.isAuthenticated;
 }
