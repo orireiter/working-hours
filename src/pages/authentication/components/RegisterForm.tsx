@@ -5,6 +5,7 @@ import { Group, Stack, TextInput, PasswordInput, Anchor, Button, Checkbox } from
 import configurations from '../../../configurations.json';
 import { isEmailValid, isPasswordValid } from '../../../utils';
 import { useRegister } from '../../../hooks/authentication.hooks';
+import { useIsMobile } from '../../../hooks/general.hooks';
 
 
 interface RegisterFormProps {
@@ -18,6 +19,9 @@ interface RegisterFormProps {
 
 export function RegisterForm(props: RegisterFormProps) {
     const register = useRegister();
+    const isMobile = useIsMobile();
+
+    const linkUnderline = isMobile ? 'always' : 'hover';
 
     const form = useForm({
         initialValues: {
@@ -34,9 +38,9 @@ export function RegisterForm(props: RegisterFormProps) {
         },
     });
 
-    const termsLabel = (<Group gap={'sm'}>
-        I accept 
-        <Anchor href='!TERMS_AND_CONDITIONS_URL!' target='_blank' underline='hover'>
+    const termsLabel = (<Group gap={'sm'} align='baseline'>
+        I accept the 
+        <Anchor href='!TERMS_AND_CONDITIONS_URL!' target='_blank' underline={linkUnderline} inline={true} >
             terms and conditions
         </Anchor>
     </ Group>
@@ -56,7 +60,7 @@ export function RegisterForm(props: RegisterFormProps) {
                 <TextInput
                     required
                     label='Email'
-                    placeholder={`hello@${configurations.siteName}.com`}
+                    placeholder={`${configurations.defaultEmailAddress}`}
                     value={form.values.email}
                     onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                     error={form.errors.email && 'Invalid email'}
@@ -82,8 +86,8 @@ export function RegisterForm(props: RegisterFormProps) {
 
             </Stack>
 
-            <Group justify='space-between' mt='xl'>
-                <Anchor component='button' type='button' c='dimmed' onClick={() => props.moveToLoginFunction()} size='xs'>
+            <Group justify='space-between' mt='xl' grow>
+                <Anchor component='button' type='button' c='dimmed' onClick={() => props.moveToLoginFunction()} size='xs' underline={linkUnderline}>
                     Already have an account? Login
                 </Anchor>
                 <Button type='submit' radius='xl'>
