@@ -5,6 +5,7 @@ import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine
 import configurations from '../../../configurations.json';
 import { isEmailValid, isPasswordValid } from '../../../utils';
 import { useLogin } from '../../../hooks/authentication.hooks';
+import { useIsMobile } from '../../../hooks/general.hooks';
 
 
 
@@ -16,7 +17,10 @@ interface LoginFormProps {
 
 
 export function LoginForm(props: LoginFormProps) {
+    const isMobile = useIsMobile();
     const login = useLogin();
+
+    const linkUnderline = isMobile ? 'always' : 'hover';
 
     const form = useForm({
         initialValues: {
@@ -37,7 +41,7 @@ export function LoginForm(props: LoginFormProps) {
                 <TextInput
                     required
                     label='Email'
-                    placeholder={`hello@${configurations.siteName}.com`}
+                    placeholder={`${configurations.defaultEmailAddress}`}
                     value={form.values.email}
                     onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                     error={form.errors.email && 'Invalid email'}
@@ -56,8 +60,8 @@ export function LoginForm(props: LoginFormProps) {
 
             </Stack>
 
-            <Group justify='space-between' mt='xl'>
-                <Anchor component='button' type='button' c='dimmed' onClick={() => props.moveToRegisterFunction()} size='xs'>
+            <Group justify='space-between' mt='xl' grow>
+                <Anchor component='button' type='button' c='dimmed' onClick={() => props.moveToRegisterFunction()} size='xs' underline={linkUnderline}>
                     Don&apos;t have an account? Register
                 </Anchor>
                 <Button type='submit' radius='xl'>
