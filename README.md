@@ -62,6 +62,7 @@
 5. make a list of everything that needs to be made for this to work (list of functions/placeholders/etc...).
 6. make it so any request to backend that determines you're logged out (401 for example), will update whatever is needed (the store) (intercept requests).
 8. add whole screen loading (spotlight)
+9. add right-to-left support
 
 
 # Layers (bottom-to-top)
