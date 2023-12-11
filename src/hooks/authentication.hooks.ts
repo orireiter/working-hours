@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useAuthenticationStore } from '../stores/authentication.store';
 import { AuthenticationService, onAuthenticationSessionStateChanged } from '../services/authentication.service';
-import { notifyError } from '../logic/notifications.logic';
+import { notifyError, notifySuccess } from '../utils/notifications.utils';
 
 
 
@@ -49,6 +49,7 @@ export function useRegister() {
     return async (email: string, password: string, name?: string) => {
         try {
             await AuthenticationService.Register.emailPasswordRegister(email, password, name);
+            notifySuccess('signup-success', 'Great! Now you only need to verify your Email');
         } catch (error) { 
             notifyError(error);
         }

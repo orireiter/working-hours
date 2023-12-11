@@ -1,6 +1,19 @@
 import { notifications } from '@mantine/notifications';
 
+import { Icon } from '../components/Icon';
+import { IconEnum, ColorEnum } from '../models/common.models';
 import { CustomError } from '../models/errors.models';
+
+
+export function notifySuccess(id: string, title: string, message = '') {
+    notifications.show({
+        id, 
+        title, 
+        message, 
+        icon: Icon({iconEnum: IconEnum.SUCCESS, color: ColorEnum.GREEN}), 
+        color: 'transparent'
+    });
+}
 
 
 export function notifyError(error: unknown, defaultId = '', defaultTitle = 'Something went wrong', defaultMessage = '') {
@@ -19,5 +32,7 @@ export function notifyError(error: unknown, defaultId = '', defaultTitle = 'Some
         id: errorId,
         title: errorTitle,
         message: errorMessage,
+        icon: Icon({iconEnum: IconEnum.ERROR, color: ColorEnum.RED}),
+        color: 'transparent'
     });
 }
