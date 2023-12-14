@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 
-import { NotImplementedError } from '../models/errors.models';
+import { supabase } from '../thirdParties/supabase';
+import { FailedToLoginError, FailedToRegisterError, FailedToLogoutError, EmailNotConfirmedError } from '../models/errors.models';
 
 
 type AuthenticationSessionStateChangeEventCallback = (event: {isAuthenticated: boolean}) => void;
@@ -31,26 +32,53 @@ class AuthenticationSessionStateChangeEvent{
 export class AuthenticationService {
     static Login = class {
         static async emailPasswordLogin(email: string, password: string){
-            // AuthenticationSessionStateChangeEvent.emit(true);
-            throw new NotImplementedError(`${this.name}.${this.emailPasswordLogin.name}`);
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) {
+                const errorToThrow = error.message.includes('not confirmed') ? EmailNotConfirmedError : FailedToLoginError;
+                throw new errorToThrow();
+            }
+
+            AuthenticationSessionStateChangeEvent.emit(true);
         }
     };
 
     static Register = class { 
         static async emailPasswordRegister(email: string, password: string, name?: string){
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+            });
+
+            if (error) {
+                throw new FailedToRegisterError();
+            }
+
             AuthenticationSessionStateChangeEvent.emit(true);
-            throw new NotImplementedError(`${this.name}.${this.emailPasswordRegister.name}`);
         }
     };
 
     static async logout() {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            throw new FailedToLogoutError();
+        }
+
         AuthenticationSessionStateChangeEvent.emit(false);
-        throw new NotImplementedError(`${this.name}.${this.logout.name}`);
     }
     
     static async getAuthenticationSession() {
-        return null;
-        throw new NotImplementedError(`${this.name}.${this.getAuthenticationSession.name}`);
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error) {
+            AuthenticationSessionStateChangeEvent.emit(false);
+        }
+
+        return session?.user?.id;
     }
 }
 

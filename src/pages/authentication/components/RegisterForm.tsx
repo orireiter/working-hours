@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button, Checkbox } from '@mantine/core';
 
 import configurations from '../../../configurations.json';
-import { isEmailValid, isPasswordValid } from '../../../utils';
+import { isEmailValid, isPasswordValid } from '../../../utils/validations.utils';
 import { useRegister } from '../../../hooks/authentication.hooks';
 import { useIsMobile } from '../../../hooks/general.hooks';
 
@@ -46,8 +46,14 @@ export function RegisterForm(props: RegisterFormProps) {
     </ Group>
     );
 
+    const onSubmit = form.onSubmit((values: {email: string, password: string}) => {
+        register(values.email, values.password)
+            .then(() => props.moveToLoginFunction())
+            .catch(() => {});
+    });
+
     return (
-        <form onSubmit={form.onSubmit((values) => void register(values.email, values.password))}>
+        <form onSubmit={onSubmit}>
             <Stack>
                 <TextInput
                     label='Name'

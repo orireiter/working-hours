@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 
 import { useAuthenticationStore } from '../stores/authentication.store';
 import { AuthenticationService, onAuthenticationSessionStateChanged } from '../services/authentication.service';
-import { notifyError } from '../logic/notifications.logic';
+import { notifyError, notifySuccess } from '../utils/notifications.utils';
+
 
 
 export function useAuthSession() {
     const authenticationStore = useAuthenticationStore();
 
-    useEffect(() => {
+    const setStoreAuthentication = () => {
         AuthenticationService.getAuthenticationSession()
             .then((session) => {
                 const isAuthenticated = session ? true : false;
@@ -17,15 +18,17 @@ export function useAuthSession() {
             .catch((error) => {
                 notifyError(error);
             });
+    };
 
-        const removeListener = onAuthenticationSessionStateChanged((authEvent) => {
-            authenticationStore.setIsAuthenticated(authEvent.isAuthenticated);
+    useEffect(() => {
+        setStoreAuthentication();
+
+        const removeListener = onAuthenticationSessionStateChanged(() => {
+            setStoreAuthentication();
         });
 
         return () => removeListener();
     }, []);
-
-
 
     return authenticationStore.isAuthenticated;
 }
@@ -46,6 +49,7 @@ export function useRegister() {
     return async (email: string, password: string, name?: string) => {
         try {
             await AuthenticationService.Register.emailPasswordRegister(email, password, name);
+            notifySuccess('signup-success', 'Great! Now you only need to verify your Email');
         } catch (error) { 
             notifyError(error);
         }

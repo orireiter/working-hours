@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { Group, Stack, TextInput, PasswordInput, Anchor, Button } from '@mantine/core';
 
 import configurations from '../../../configurations.json';
-import { isEmailValid, isPasswordValid } from '../../../utils';
+import { isEmailValid, isPasswordValid } from '../../../utils/validations.utils';
 import { useLogin } from '../../../hooks/authentication.hooks';
 import { useIsMobile } from '../../../hooks/general.hooks';
 
