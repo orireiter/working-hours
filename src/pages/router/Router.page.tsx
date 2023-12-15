@@ -12,7 +12,7 @@ export interface Route {
 }
 
 export function Router(props: { authenticatedRoutes: Route[], notAuthenticatedRoutes: Route[], defaultAuthenticatedURL?: string, defaultNotAuthenticatedURL?: string}) {
-    const isAuthenticated = useAuthSession();
+    const { isAuthenticated, isLoading } = useAuthSession();
 
     const routesToUse = isAuthenticated ? props.authenticatedRoutes : props.notAuthenticatedRoutes;
     
