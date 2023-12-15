@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useAuthSession } from '../../hooks/authentication.hooks';
 
 import { Redirect } from './components/Redirect';
+import { Loading } from './components/Loading';
 
 
 export interface Route {
@@ -13,6 +14,12 @@ export interface Route {
 
 export function Router(props: { authenticatedRoutes: Route[], notAuthenticatedRoutes: Route[], defaultAuthenticatedURL?: string, defaultNotAuthenticatedURL?: string}) {
     const { isAuthenticated, isLoading } = useAuthSession();
+
+    if (isLoading) {
+        return (
+            <Loading />
+        );
+    }
 
     const routesToUse = isAuthenticated ? props.authenticatedRoutes : props.notAuthenticatedRoutes;
     
