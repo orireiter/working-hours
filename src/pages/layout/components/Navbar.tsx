@@ -1,4 +1,4 @@
-import { AppShell, Skeleton, ScrollArea, Group, ActionIcon, Tooltip } from '@mantine/core';
+import { AppShell, Skeleton, ScrollArea, Group, ActionIcon, Tooltip, Loader } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 
 import { ThemeToggle } from '../../../components/ThemeToggle';
@@ -7,7 +7,7 @@ import { useLogout, useAuthSession } from '../../../hooks/authentication.hooks';
 
 function NavbarFooter(props: {closeNavbar: () => void}) {
     const { isAuthenticated } = useAuthSession();
-    const { logout } = useLogout();
+    const { logout, isLoading } = useLogout();
 
     let logoutIcon = null;
     if(isAuthenticated) {
@@ -18,9 +18,11 @@ function NavbarFooter(props: {closeNavbar: () => void}) {
         variant='default'
         size='xl'
         aria-label='log out'
-        radius={10}>
+        radius={10}
+        disabled={isLoading}
+        >
             <Tooltip label='log out' offset={0} position='top'>
-                <IconLogout stroke={1.5} />
+                {isLoading ? <Loader /> : <IconLogout stroke={1.5} />}
             </Tooltip>
         </ActionIcon>);
     } 
