@@ -1,34 +1,17 @@
-import { JSX } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { useAuthSession } from '../../hooks/authentication.hooks';
+import { Route } from '../../models/routing.models';
 
 import { Redirect } from './components/Redirect';
-import { Loading } from './components/Loading';
 
 
-export interface Route {
-    path: string;
-    element: JSX.Element;
-}
 
-export function Router(props: { authenticatedRoutes: Route[], notAuthenticatedRoutes: Route[], defaultAuthenticatedURL?: string, defaultNotAuthenticatedURL?: string}) {
-    const { isAuthenticated, isLoading } = useAuthSession();
-
-    if (isLoading) {
-        return (
-            <Loading />
-        );
+export function Router(props: { routesToUse: Route[], defaultURL?: string }) {
+    const routesToUse = props.routesToUse;
+    if (props.defaultURL) {
+        routesToUse.push({ path: '/*', element: <Redirect redirectTo={props.defaultURL}/> });
     }
 
-    const routesToUse = isAuthenticated ? props.authenticatedRoutes : props.notAuthenticatedRoutes;
-    
-    if (props.defaultAuthenticatedURL && isAuthenticated) {
-        routesToUse.push({path: '/*', element: <Redirect redirectTo={props.defaultAuthenticatedURL}/>});
-    } else if (props.defaultNotAuthenticatedURL && !isAuthenticated) {
-        routesToUse.push({path: '/*', element: <Redirect redirectTo={props.defaultNotAuthenticatedURL}/>});
-    }
-
-    const router = createBrowserRouter(routesToUse);
+    const router = createBrowserRouter(props.routesToUse);
     return (<RouterProvider router={router}/>);
 }
