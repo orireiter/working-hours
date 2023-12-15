@@ -19,7 +19,10 @@ interface RegisterFormProps {
 
 export function RegisterForm(props: RegisterFormProps) {
     const { register, isLoading } = useRegister();
+    const isMobile = useIsMobile();
 
+    const linkUnderline = isMobile ? 'always' : 'hover';
+    
     const form = useForm({
         initialValues: {
             email: props.initialEmail ?? '',
