@@ -2,20 +2,27 @@ import '@mantine/core/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/notifications/styles.css';
 
+import { JSX } from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Loading } from './components/Loading';
 import { Layout } from './pages/layout/Layout.page';
-import { Router } from './pages/router/Router.page';
-import { Authentication } from './pages/authentication/Authentication.page';
 import { Home } from './pages/home/Home.page';
+import { Authentication } from './pages/authentication/Authentication.page';
+import { MyJobs } from './pages/myJobs/MyJobs.page';
+import { Loading } from './components/Loading';
+import { Redirect } from './components/Redirect';
 import { useAuthSession } from './hooks/authentication.hooks';
-import { Route } from './models/routing.models';
+import { RouteData } from './models/routing.models';
 import { IconEnum } from './models/common.models';
 
 
-const authenticatedRoutes: Route[] = [
+const authenticatedRoutes: RouteData[] = [
+    { 
+        path: '/*', 
+        element: <Redirect redirectTo={'/'}/> 
+    },
     {
         name: 'Home',
         iconEnum: IconEnum.HOME,
@@ -26,54 +33,64 @@ const authenticatedRoutes: Route[] = [
         name: 'My Jobs',
         iconEnum: IconEnum.BRIEFCASE,
         path: '/jobs',
-        element: <h1>ORI</h1>,
+        element: <MyJobs />,
     }
 ];
 
 
-const notAuthenticatedRoutes: Route[] = [
+const notAuthenticatedRoutes: RouteData[] = [
+    { 
+        path: '/*', 
+        element: <Redirect redirectTo={'/login'}/> 
+    },
+    { 
+        path: '/', 
+        element: <Redirect redirectTo={'/login'}/> 
+    },
     {
         name: 'login',
+        iconEnum: IconEnum.LOGIN,
         path: '/login',
         element: <Authentication />,
-    }
+    },
 ];
 
 
-function AppContent(props: { isLoading: boolean, routesToUse: Route[], defaultURL?: string }) {
-    if (props.isLoading) {
-        return (
-            <Loading />
-        );
-    }
+function AppContent() {
+    const { isAuthenticated, isLoading } = useAuthSession();
+    
+    let routesToUse: RouteData[] = [];
+    let content: JSX.Element | JSX.Element[] = <Route element={<Loading />} path='/*'/>;
+
+    if (!isLoading) {
+        routesToUse = isAuthenticated ? authenticatedRoutes : notAuthenticatedRoutes;
+        content = routesToUse.map((route) => {
+            return (
+                <Route key={route.path} element={route.element} path={route.path}/>
+            );
+        });
+    }    
 
     return (
-        <Router 
-            routesToUse={props.routesToUse}
-            defaultURL={props.defaultURL}
-        />
+        <BrowserRouter>
+            <Layout routes={routesToUse}>
+                <Routes>
+                    {content}
+                </Routes>
+            </Layout>
+        </BrowserRouter>
     );
 }
     
 
 function App() {
-    const { isAuthenticated, isLoading } = useAuthSession();
-    let routesToUse = notAuthenticatedRoutes;
-    let defaultURL = '/login';
     
-    if (isAuthenticated) {
-        routesToUse = authenticatedRoutes;
-        defaultURL = '/';
-    } 
-
     return (
         <>
             <ColorSchemeScript defaultColorScheme='auto' />
             <MantineProvider defaultColorScheme='auto'>
                 <Notifications />
-                <Layout routes={routesToUse}>
-                    <AppContent isLoading={isLoading} routesToUse={routesToUse} defaultURL={defaultURL} />
-                </Layout>
+                <AppContent />
             </ MantineProvider>
         </>
     );

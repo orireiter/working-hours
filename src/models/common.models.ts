@@ -2,6 +2,7 @@ export enum IconEnum {
     ERROR,
     SUCCESS,
     LOGOUT,
+    LOGIN,
     HOME,
     SUN,
     MOON,
