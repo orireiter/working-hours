@@ -4,7 +4,8 @@ export enum IconEnum {
     LOGOUT,
     HOME,
     SUN,
-    MOON
+    MOON,
+    BRIEFCASE,
 }
 
 export enum ColorEnum {

@@ -12,18 +12,28 @@ import { Authentication } from './pages/authentication/Authentication.page';
 import { Home } from './pages/home/Home.page';
 import { useAuthSession } from './hooks/authentication.hooks';
 import { Route } from './models/routing.models';
+import { IconEnum } from './models/common.models';
 
 
 const authenticatedRoutes: Route[] = [
     {
+        name: 'Home',
+        iconEnum: IconEnum.HOME,
         path: '/',
         element: <Home />,
+    },
+    {
+        name: 'My Jobs',
+        iconEnum: IconEnum.BRIEFCASE,
+        path: '/jobs',
+        element: <h1>ORI</h1>,
     }
 ];
 
 
 const notAuthenticatedRoutes: Route[] = [
     {
+        name: 'login',
         path: '/login',
         element: <Authentication />,
     }
@@ -44,7 +54,7 @@ function AppContent(props: { isLoading: boolean, routesToUse: Route[], defaultUR
         />
     );
 }
-
+    
 
 function App() {
     const { isAuthenticated, isLoading } = useAuthSession();
@@ -61,6 +71,7 @@ function App() {
             <ColorSchemeScript defaultColorScheme='auto' />
             <MantineProvider defaultColorScheme='auto'>
                 <Notifications />
+                <Layout routes={routesToUse}>
                     <AppContent isLoading={isLoading} routesToUse={routesToUse} defaultURL={defaultURL} />
                 </Layout>
             </ MantineProvider>

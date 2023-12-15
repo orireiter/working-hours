@@ -1,4 +1,4 @@
-import { IconExclamationCircle, IconCircleCheck, IconLogout, IconHome, IconMoon, IconSun } from '@tabler/icons-react';
+import { IconExclamationCircle, IconCircleCheck, IconLogout, IconHome, IconMoon, IconSun, IconBriefcase } from '@tabler/icons-react';
 
 import { IconEnum, Color } from '../models/common.models';
 
@@ -9,7 +9,8 @@ const enumToComopnent = {
     [IconEnum.LOGOUT]: IconLogout,
     [IconEnum.HOME]: IconHome,
     [IconEnum.SUN]: IconSun,
-    [IconEnum.MOON]: IconMoon
+    [IconEnum.MOON]: IconMoon,
+    [IconEnum.BRIEFCASE]: IconBriefcase
 };
 
 
