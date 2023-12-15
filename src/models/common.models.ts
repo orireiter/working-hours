@@ -7,6 +7,7 @@ export enum IconEnum {
     SUN,
     MOON,
     BRIEFCASE,
+    PLUS,
 }
 
 export enum ColorEnum {
