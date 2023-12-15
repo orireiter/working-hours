@@ -7,6 +7,36 @@ import { Icon } from '../../../components/Icon';
 import { IconEnum, ColorEnum } from '../../../models/common.models';
 
 
+function NavbarRoutes(props: { closeNavbar: () => void, routes: Route[]}) {
+    const routesComponents =  [];
+    
+    for (const route of props.routes) {
+        if (!route.name) {
+            continue;
+        }
+
+        routesComponents.push(
+            <Paper key={route.path} withBorder>
+                <NavLink
+                    href={route.path}
+                    label={route.name}
+                    onClick={() => {
+                        props.closeNavbar();
+                    }}
+                    leftSection={route.iconEnum ? <Icon iconEnum={route.iconEnum} color={ColorEnum.BLUE}/> : null}
+                />
+            </Paper>
+        );
+    }
+
+    return (
+        <Stack gap='xs'>
+            {routesComponents}
+        </Stack>
+    );
+}
+
+
 function NavbarFooter(props: { closeNavbar: () => void }) {
     const { isAuthenticated } = useAuthSession();
     const { logout, isLoading } = useLogout();
@@ -40,33 +70,10 @@ function NavbarFooter(props: { closeNavbar: () => void }) {
 
 
 export function Navbar(props: { closeNavbar: () => void, routes: Route[]}) {
-    const routesComponents =  [];
-    
-    for (const route of props.routes) {
-        if (!route.name) {
-            continue;
-        }
-
-        routesComponents.push(
-            <Paper key={route.path} withBorder>
-                <NavLink
-                    href={route.path}
-                    label={route.name}
-                    onClick={() => {
-                        props.closeNavbar();
-                    }}
-                    leftSection={route.iconEnum ? <Icon iconEnum={route.iconEnum} color={ColorEnum.BLUE}/> : null}
-                />
-            </Paper>
-        );
-    }
-
     return (
         <>
             <AppShell.Section grow my='md' component={ScrollArea}>
-                <Stack gap='xs'>
-                    {routesComponents}
-                </Stack>
+                <NavbarRoutes closeNavbar={props.closeNavbar} routes={props.routes} />
             </AppShell.Section>
             <AppShell.Section>
                 <NavbarFooter closeNavbar={props.closeNavbar}/>
