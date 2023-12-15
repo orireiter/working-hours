@@ -1,6 +1,10 @@
 export enum IconEnum {
     ERROR,
-    SUCCESS
+    SUCCESS,
+    LOGOUT,
+    HOME,
+    SUN,
+    MOON
 }
 
 export enum ColorEnum {
