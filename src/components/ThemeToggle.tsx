@@ -1,5 +1,8 @@
 import { Group, ActionIcon, useMantineColorScheme, Container } from '@mantine/core';
-import { IconSun, IconMoon } from '@tabler/icons-react';
+
+import { IconEnum } from '../models/common.models';
+
+import { Icon } from './Icon';
 
 
 export function ThemeToggle() {
@@ -15,10 +18,10 @@ export function ThemeToggle() {
                 radius={10}
             >
                 <Container lightHidden={true}>
-                    <IconSun stroke={1.5} />
+                    <Icon iconEnum={IconEnum.SUN}/>
                 </Container>
                 <Container darkHidden={true}>
-                    <IconMoon stroke={1.5} />
+                    <Icon iconEnum={IconEnum.MOON} />
                 </Container>
             </ActionIcon>
         </Group>
