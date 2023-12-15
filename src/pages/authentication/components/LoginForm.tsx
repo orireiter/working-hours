@@ -17,7 +17,10 @@ interface LoginFormProps {
 
 
 export function LoginForm(props: LoginFormProps) {
-    const { login, isLoading } = useLogin();
+    const isMobile = useIsMobile();
+    const { login, isLoading }= useLogin();
+
+    const linkUnderline = isMobile ? 'always' : 'hover';
 
     const form = useForm({
         initialValues: {
