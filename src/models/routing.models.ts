@@ -3,7 +3,7 @@ import { JSX } from 'react';
 import { IconEnum } from './common.models';
 
 
-export interface Route {
+export interface RouteData {
     name?: string;
     iconEnum?: IconEnum
     path: string;

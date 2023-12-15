@@ -40,6 +40,7 @@ function RegisterInputs(props: { form: UseFormReturnType<registerForm> }) {
 
             <TextInput
                 required
+                type='email'
                 label='Email'
                 placeholder={`${configurations.defaultEmailAddress}`}
                 value={props.form.values.email}
@@ -50,6 +51,7 @@ function RegisterInputs(props: { form: UseFormReturnType<registerForm> }) {
 
             <PasswordInput
                 required
+                type='password'
                 label='Password'
                 placeholder='Your password'
                 value={props.form.values.password}

@@ -1,13 +1,16 @@
 import { AppShell, ScrollArea, Group, ActionIcon, Tooltip, Loader, NavLink, Container, Stack, Paper } from '@mantine/core';
+import { useNavigate } from 'react-router';
 
 import { ThemeToggle } from '../../../components/ThemeToggle';
 import { useLogout, useAuthSession } from '../../../hooks/authentication.hooks';
-import { Route } from '../../../models/routing.models';
+import { RouteData } from '../../../models/routing.models';
 import { Icon } from '../../../components/Icon';
 import { IconEnum, ColorEnum } from '../../../models/common.models';
 
 
-function NavbarRoutes(props: { closeNavbar: () => void, routes: Route[]}) {
+function NavbarRoutes(props: { closeNavbar: () => void, routes: RouteData[]}) {
+    const navigate = useNavigate();
+
     const routesComponents =  [];
     
     for (const route of props.routes) {
@@ -20,8 +23,10 @@ function NavbarRoutes(props: { closeNavbar: () => void, routes: Route[]}) {
                 <NavLink
                     href={route.path}
                     label={route.name}
-                    onClick={() => {
+                    onClick={(event) => {
+                        event.preventDefault();
                         props.closeNavbar();
+                        navigate(route.path);
                     }}
                     leftSection={route.iconEnum ? <Icon iconEnum={route.iconEnum} color={ColorEnum.BLUE}/> : null}
                 />
@@ -69,7 +74,7 @@ function NavbarFooter(props: { closeNavbar: () => void }) {
 }
 
 
-export function Navbar(props: { closeNavbar: () => void, routes: Route[]}) {
+export function Navbar(props: { closeNavbar: () => void, routes: RouteData[]}) {
     return (
         <>
             <AppShell.Section grow my='md' component={ScrollArea}>

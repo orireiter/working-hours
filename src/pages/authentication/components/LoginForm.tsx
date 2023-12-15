@@ -19,6 +19,7 @@ function LoginInputs(props: { form: UseFormReturnType<loginForm> }) {
         <Stack>
             <TextInput
                 required
+                type='email'
                 label='Email'
                 placeholder={`${configurations.defaultEmailAddress}`}
                 value={props.form.values.email}
@@ -29,6 +30,7 @@ function LoginInputs(props: { form: UseFormReturnType<loginForm> }) {
 
             <PasswordInput
                 required
+                type='password'
                 label='Password'
                 placeholder='Your password'
                 value={props.form.values.password}

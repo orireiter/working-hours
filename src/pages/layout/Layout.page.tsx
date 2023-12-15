@@ -2,14 +2,14 @@ import { JSX } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { AppShell } from '@mantine/core';
 
-import { Route } from '../../models/routing.models';
+import { RouteData } from '../../models/routing.models';
 
 import { Header } from './components/Header';
 import { Navbar } from './components/Navbar';
 
 
 
-export function Layout(props: { children: JSX.Element, routes: Route[]}) {
+export function Layout(props: { children: JSX.Element, routes: RouteData[]}) {
     const [isNavbarOpened, { close: closeNavbar, toggle: toggleNavbarOpen }] = useDisclosure();
 
     return (
