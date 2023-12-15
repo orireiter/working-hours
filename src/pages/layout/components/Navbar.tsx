@@ -6,8 +6,8 @@ import { useLogout, useAuthSession } from '../../../hooks/authentication.hooks';
 
 
 function NavbarFooter(props: {closeNavbar: () => void}) {
-    const isAuthenticated = useAuthSession();
-    const logout = useLogout();
+    const { isAuthenticated } = useAuthSession();
+    const { logout } = useLogout();
 
     let logoutIcon = null;
     if(isAuthenticated) {
