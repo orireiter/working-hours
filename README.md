@@ -50,12 +50,8 @@
 
 
 # Features
-1. make basic pages:
-    1. navbar
-2. decide how to add data to the navbar
-3. try to add boundaries to 3rd party libraries
+1. try to add boundaries to 3rd party libraries
 3. make it pluggable to other services easily
-3. make it easy to add new pages
 4. make a configuration file to specify what to use of the site:
     1. which pages to show and whether they require authentication.
     2. site name.
