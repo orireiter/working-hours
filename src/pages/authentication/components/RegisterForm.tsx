@@ -33,9 +33,8 @@ function RegisterInputs(props: { form: UseFormReturnType<registerForm> }) {
             <TextInput
                 label='Name'
                 placeholder='Your name'
-                value={props.form.values.name}
-                onChange={(event) => props.form.setFieldValue('name', event.currentTarget.value)}
                 radius='md'
+                {...props.form.getInputProps('name')}
             />
 
             <TextInput
@@ -43,10 +42,9 @@ function RegisterInputs(props: { form: UseFormReturnType<registerForm> }) {
                 type='email'
                 label='Email'
                 placeholder={`${configurations.defaultEmailAddress}`}
-                value={props.form.values.email}
-                onChange={(event) => props.form.setFieldValue('email', event.currentTarget.value)}
-                error={props.form.errors.email && 'Invalid email'}
                 radius='md'
+                {...props.form.getInputProps('email')}
+                error={props.form.errors.email && 'Invalid email'}
             />
 
             <PasswordInput
@@ -54,16 +52,15 @@ function RegisterInputs(props: { form: UseFormReturnType<registerForm> }) {
                 type='password'
                 label='Password'
                 placeholder='Your password'
-                value={props.form.values.password}
-                onChange={(event) => props.form.setFieldValue('password', event.currentTarget.value)}
-                error={props.form.errors.password && 'Password should include at least 8 characters, upper & lower characters, numbers and special characters'}
                 radius='md'
+                {...props.form.getInputProps('password')}
+                error={props.form.errors.password && 'Password should include at least 8 characters, upper & lower characters, numbers and special characters'}
             />
 
             <Checkbox
                 label={termsLabel}
                 checked={props.form.values.terms}
-                onChange={(event) => props.form.setFieldValue('terms', event.currentTarget.checked)}
+                {...props.form.getInputProps('terms')}
                 error={props.form.errors.terms && 'You must accept the terms and conditions'}
             />
 
@@ -116,8 +113,8 @@ export function RegisterForm(props: RegisterFormProps) {
         },
     });
 
-    const onSubmit = form.onSubmit((values: {email: string, password: string}) => {
-        register(values.email, values.password)
+    const onSubmit = form.onSubmit((values: {email: string, password: string, name: string}) => {
+        register(values.email, values.password, values.name)
             .then(() => props.moveToLoginFunction())
             .catch(() => {});
     });
