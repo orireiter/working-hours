@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Affix, Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea } from '@mantine/core';
@@ -7,10 +6,11 @@ import { Icon } from '../../../components/Icon';
 import { IconEnum } from '../../../models/common.models';
 import { NewJob, SalaryFrequencyEnum, CurrencyTypeEnum, currencyTypeToSymbolMapping } from '../../../models/jobs.models';
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
+import { useSaveNewJob } from '../../../hooks/jobs.hooks';
 
 
 function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { saveJob, isLoading } = useSaveNewJob();
 
     const form = useForm<NewJob>({
         initialValues: {
@@ -30,15 +30,11 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
         }
     });
     
-    const onSubmit = form.onSubmit((values) => {
-        console.log(values);
-        setIsSubmitting(true);
-        setTimeout(() => setIsSubmitting(false), 3000);
-    });
+    const onSubmit = form.onSubmit((values) => void saveJob(values));
 
     return (
         <Modal opened={props.isFormOpen} onClose={props.closeForm} title='Add New Job'>
-            <LoadingOverlay isLoading={isSubmitting} />
+            <LoadingOverlay isLoading={isLoading} />
             <form onSubmit={onSubmit}>
                 <Stack>
                     <TextInput
