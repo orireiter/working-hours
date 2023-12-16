@@ -5,6 +5,17 @@ import { NewJob, ExistingJob } from '../models/jobs.models';
 const jobsTable = supabase.from('jobs');
 
 
+export async function getUserInSessionJobs() {
+    const { data, error } = await jobsTable.select('*');
+
+    if (error) { 
+        throw new Error('failed to save job');
+    }
+
+    console.log(data);
+    return data;
+}
+
 
 export async function saveNewJob(job: NewJob) {
     const remoteJob: Record<string, string | number> = {
