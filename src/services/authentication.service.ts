@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 
 import { supabase } from '../thirdParties/supabase';
 import { FailedToLoginError, FailedToRegisterError, FailedToLogoutError, EmailNotConfirmedError } from '../models/errors.models';
+import { RemoteUser } from '../models/authentication.models';
 
 
 type AuthenticationSessionStateChangeEventCallback = (event: {isAuthenticated: boolean}) => void;
@@ -48,10 +49,20 @@ export class AuthenticationService {
 
     static Register = class { 
         static async emailPasswordRegister(email: string, password: string, name?: string){
-            const { error } = await supabase.auth.signUp({
+            const dataToSend: RemoteUser = {
                 email,
                 password,
-            });
+            };
+
+            if (name) {
+                dataToSend.options = {
+                    data: {
+                        full_name: name
+                    }
+                };
+            }
+            
+            const { error } = await supabase.auth.signUp(dataToSend);
 
             if (error) {
                 throw new FailedToRegisterError();
@@ -78,7 +89,7 @@ export class AuthenticationService {
             AuthenticationSessionStateChangeEvent.emit(false);
         }
 
-        return session?.user?.id;
+        return session;
     }
 }
 
