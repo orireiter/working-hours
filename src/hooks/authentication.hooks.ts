@@ -14,8 +14,9 @@ export function useAuthSession() {
         setIsLoading(true);
         AuthenticationService.getAuthenticationSession()
             .then((session) => {
-                const isAuthenticated = session ? true : false;
+                const isAuthenticated = session?.user.id ? true : false;
                 authenticationStore.setIsAuthenticated(isAuthenticated);
+                authenticationStore.setUser({email: session?.user.email ?? '', fullName: session?.user.user_metadata?.full_name as string});
             })
             .catch((error) => {
                 notifyError(error);
@@ -44,11 +45,13 @@ export function useAuthSession() {
 // todo turn this later into a factory function for email/google/etc sign in options
 export function useLogin() {
     const [isLoading, setIsLoading] = useState(false);
+    const authenticationStore = useAuthenticationStore();
 
     const login = async (email: string, password: string) => {
         try {
             setIsLoading(true);
             await AuthenticationService.Login.emailPasswordLogin(email, password);
+            notifySuccess('login-success', `Hello ${authenticationStore.user?.fullName ?? ''}`, 'Welcome back');
         } catch (error) {
             notifyError(error);
         } finally {
