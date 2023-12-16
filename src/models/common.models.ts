@@ -19,4 +19,3 @@ export enum ColorEnum {
 type HEX = `#${string}`;
 
 export type Color = ColorEnum | HEX;
-
