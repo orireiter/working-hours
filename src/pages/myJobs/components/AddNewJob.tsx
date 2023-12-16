@@ -2,6 +2,7 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Affix, Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea } from '@mantine/core';
 
+import { useIsMobile } from '../../../hooks/general.hooks';
 import { Icon } from '../../../components/Icon';
 import { IconEnum } from '../../../models/common.models';
 import { NewJob, SalaryFrequencyEnum, CurrencyTypeEnum, currencyTypeToSymbolMapping } from '../../../models/jobs.models';
@@ -10,6 +11,7 @@ import { useSaveNewJob } from '../../../hooks/jobs.hooks';
 
 
 function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
+    const isMobile = useIsMobile();
     const { saveJob, isLoading } = useSaveNewJob();
 
     const form = useForm<NewJob>({
@@ -48,7 +50,7 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
                     <Flex columnGap={'sm'} align={'center'} style={{justifyContent: 'space-between'}}>
                         <NumberInput 
                             required
-                            w={'70%'}
+                            w={isMobile ? '60%' : '70%'}
                             label='Salary'
                             min={0}
                             decimalSeparator='.'
@@ -58,7 +60,7 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
                         />
                         <Select 
                             required
-                            w={'20%'}
+                            w={isMobile ? '30%' : '20%'}
                             label='Currency'
                             data={Object.keys(currencyTypeToSymbolMapping)}
                             onChange={(currencySymbol) => {
