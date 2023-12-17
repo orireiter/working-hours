@@ -1,30 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import { NewJob } from '../models/jobs.models';
+import { NewJob, ExistingJob } from '../models/jobs.models';
 import { saveNewJob, getUserInSessionJobs } from '../services/jobs.service';
-import { notifyError } from '../utils/notifications.utils';
+import { notifyError, notifySuccess } from '../utils/notifications.utils';
 
 
 export function useGetUserJobs() {
+    const [jobs, setJobs] = useState<ExistingJob[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const getJobs = async () => {
-        let jobs = [];
+    const refreshJobs = async () => {
+        setJobs([]);
         setIsLoading(true);
         try {
-            jobs = await getUserInSessionJobs();
-        } catch (error) {
+            const jobs = await getUserInSessionJobs();
+            setJobs(jobs);
+        } catch (error) { 
             notifyError(error);
-        } finally {
-            setIsLoading(false);  
+        } finally { 
+            setIsLoading(false);
         }
-
-        return jobs;
     };
 
+    useEffect(() => {
+        void refreshJobs();
+    }, []);
+    
     return {
-        getJobs,
-        isLoading
+        jobs,
+        isLoading,
+        refreshJobs
     };
 }
 
@@ -36,6 +41,7 @@ export function useSaveNewJob() {
         setIsLoading(true);
         try {
             await saveNewJob(job);
+            notifySuccess('job-saved', 'Saved!', 'job added');
         } catch (error) {
             notifyError(error);
         } finally {

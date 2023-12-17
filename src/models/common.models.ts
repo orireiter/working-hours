@@ -19,3 +19,10 @@ export enum ColorEnum {
 type HEX = `#${string}`;
 
 export type Color = ColorEnum | HEX;
+
+
+export enum zIndexEnum {
+    BACK,
+    MIDDLE,
+    FRONT
+}

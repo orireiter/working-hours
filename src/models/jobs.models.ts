@@ -36,3 +36,16 @@ export interface ExistingJob extends NewJob {
     id: string;
 	userId: string; // type not decided yet, will be auto generated
 }
+
+
+export interface RemoteJob {
+    address?: string;
+    created_at: string;
+    id: number;
+    name: string; 
+    note?: string;
+    salary_amount: number;
+    salary_currency: CurrencyTypeEnum;
+    salary_frequency: SalaryFrequencyEnum; 
+    user_id: string;
+}
