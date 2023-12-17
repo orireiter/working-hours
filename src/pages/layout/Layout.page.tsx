@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { AppShell } from '@mantine/core';
 
 import { RouteData } from '../../models/routing.models';
+import { zIndexEnum } from '../../models/common.models';
 
 import { Header } from './components/Header';
 import { Navbar } from './components/Navbar';
@@ -21,7 +22,7 @@ export function Layout(props: { children: JSX.Element, routes: RouteData[]}) {
             <AppShell.Header>
                 <Header isBurgerOpened={isNavbarOpened} toggleBurgerOpen={toggleNavbarOpen} />
             </AppShell.Header>
-            <AppShell.Navbar p='md'>
+            <AppShell.Navbar p='md' zIndex={zIndexEnum.FRONT}>
                 <Navbar routes={props.routes} closeNavbar={closeNavbar}/>
             </AppShell.Navbar>
             <AppShell.Main px={'5%'} onClick={() => closeNavbar()}>
