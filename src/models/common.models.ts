@@ -7,7 +7,7 @@ export enum IconEnum {
     SUN,
     MOON,
     BRIEFCASE,
-    PLUS
+    PLUS,
 }
 
 export enum ColorEnum {
@@ -20,3 +20,8 @@ type HEX = `#${string}`;
 
 export type Color = ColorEnum | HEX;
 
+export enum zIndexEnum {
+    BACK = 1000,
+    MIDDLE = 2000,
+    FRONT = 3000
+}
