@@ -25,7 +25,7 @@ export function useGetUserJobs() {
     useEffect(() => {
         void refreshJobs();
     }, []);
-
+    
     return {
         jobs,
         isLoading,

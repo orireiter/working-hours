@@ -10,7 +10,7 @@ import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { useSaveNewJob } from '../../../hooks/jobs.hooks';
 
 
-function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
+function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void, refreshExistingJobs?: () => void }) {
     const isMobile = useIsMobile();
     const { saveJob, isLoading } = useSaveNewJob();
 
@@ -31,8 +31,17 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
             },
         }
     });
-
-    const onSubmit = form.onSubmit((values) => void saveJob(values));
+    
+    const onSubmit = form.onSubmit((values) => {
+        saveJob(values)
+            .then(() => {
+                props.closeForm();
+                if (props.refreshExistingJobs) {
+                    props.refreshExistingJobs();
+                }
+            })
+            .catch(() => {});
+    });
 
     return (
         <Modal opened={props.isFormOpen} onClose={props.closeForm} title='Add New Job'>
@@ -105,7 +114,7 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void }) {
 }
 
 
-export function AddNewJob() {
+export function AddNewJob(props: {refreshExistingJobs: () => void}){
     const [isNewJobFormOpened, { open: openJobForm , close }] = useDisclosure(false);
 
     return (
@@ -113,7 +122,7 @@ export function AddNewJob() {
             <Button onClick={() => openJobForm()}>
                 <Icon iconEnum={IconEnum.PLUS} />
             </Button>
-            <NewJobForm isFormOpen={isNewJobFormOpened} closeForm={close}/>
+            <NewJobForm isFormOpen={isNewJobFormOpened} closeForm={close} refreshExistingJobs={props.refreshExistingJobs}/>
         </Affix>
     );
 }
