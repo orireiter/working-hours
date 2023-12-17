@@ -1,8 +1,32 @@
 import { supabase } from '../thirdParties/supabase';
-import { NewJob } from '../models/jobs.models';
+import { NewJob, ExistingJob, RemoteJob } from '../models/jobs.models';
 
 
 const jobsTable = supabase.from('jobs');
+
+
+export async function getUserInSessionJobs() {
+    const { data, error } = await jobsTable.select<string, RemoteJob>('*');
+
+    if (error) { 
+        throw new Error('failed to save job');
+    }
+
+    const transformedJobs: ExistingJob[] = data.map(job => {
+        return {
+            id: `${job.id}`,
+            userId: job.user_id,
+            name: job.name,
+            salaryAmount: job.salary_amount,
+            salaryCurrency: job.salary_currency,
+            salaryFrequency: job.salary_frequency,
+            address: job.address,
+            note: job.note,
+        };
+    });
+
+    return transformedJobs;
+}
 
 
 export async function saveNewJob(job: NewJob) {
@@ -22,7 +46,7 @@ export async function saveNewJob(job: NewJob) {
     }
 
 
-    const { data, error } = await jobsTable.insert([remoteJob,]).select();
+    const { data, error } = await jobsTable.insert([remoteJob,]).select<string, RemoteJob>();
 
     if (error) { 
         throw new Error('failed to save job');
