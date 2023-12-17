@@ -3,10 +3,12 @@ export enum CurrencyTypeEnum {
     USD = 'USD',
 }
 
+
 export enum CurrencySymbolEnum {
     NIS = '₪',
     USD = '$',
 }
+
 
 export const currencyTypeToSymbolMapping: Record<string, CurrencyTypeEnum>= {
     [CurrencySymbolEnum.NIS]: CurrencyTypeEnum.NIS,

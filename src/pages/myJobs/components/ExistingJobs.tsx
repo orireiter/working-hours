@@ -5,30 +5,36 @@ import { ExistingJob } from '../../../models/jobs.models';
 import { useIsMobile } from '../../../hooks/general.hooks';
 
 
+function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job: ExistingJob | object}) {
+    const jobToRender = (Object.keys(props.job).length) ? props.job : null;
+    
+    return (
+        <Grid.Col pos={'relative'} span={props.gridSpan}>
+            <Card mih={props.minHeight}>
+                <LoadingOverlay isLoading={props.isLoading} />
+                {jobToRender ? JSON.stringify(jobToRender) : null}
+            </Card>
+        </Grid.Col>);
+}
+
+
 function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean }) {
     const isMobile = useIsMobile();
 
     const gridSpan = isMobile ? 3 : 1;
     const minimumHeight = isMobile ? '50vh': '20vh';
-
+    
     let jobGrid;
     if (props.isLoading) {
-        jobGrid = Array(5).fill({}).map((_, index) => {
+        jobGrid = Array(5).fill({}).map((_: object, index) => {
             return (
-                <Grid.Col key={index} pos={'relative'} span={gridSpan}>
-                    <Card mih={minimumHeight}>
-                        <LoadingOverlay isLoading={props.isLoading} />
-                    </Card>
-                </Grid.Col>);
+                <GridCell key={index} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} job={_} />    
+            );
         });
     } else {
         jobGrid = props.jobs.map(job => {
             return (
-                <Grid.Col key={job.id} span={1}>
-                    <Card mih={'20vh'}>
-                        {JSON.stringify(job)}
-                    </Card>
-                </Grid.Col>
+                <GridCell key={job.id} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} job={job} />    
             );
         });
     }
