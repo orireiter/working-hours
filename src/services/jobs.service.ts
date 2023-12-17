@@ -1,5 +1,5 @@
 import { supabase } from '../thirdParties/supabase';
-import { NewJob, RemoteJob, ExistingJob } from '../models/jobs.models';
+import { NewJob, ExistingJob, RemoteJob } from '../models/jobs.models';
 
 
 const jobsTable = supabase.from('jobs');

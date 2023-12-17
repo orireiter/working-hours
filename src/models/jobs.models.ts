@@ -32,6 +32,7 @@ export interface NewJob{
 	note?: string;
 }
 
+
 export interface ExistingJob extends NewJob {
     id: string;
 	userId: string; // type not decided yet, will be auto generated
