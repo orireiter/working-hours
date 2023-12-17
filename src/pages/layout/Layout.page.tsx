@@ -9,7 +9,6 @@ import { Header } from './components/Header';
 import { Navbar } from './components/Navbar';
 
 
-
 export function Layout(props: { children: JSX.Element, routes: RouteData[]}) {
     const [isNavbarOpened, { close: closeNavbar, toggle: toggleNavbarOpen }] = useDisclosure();
 
