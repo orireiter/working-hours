@@ -1,18 +1,50 @@
-import { Title, Grid, Stack, Card } from '@mantine/core';
+import { Title, Grid, Stack, Card, Text, Group, Spoiler } from '@mantine/core';
 
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
-import { ExistingJob } from '../../../models/jobs.models';
+import { ExistingJob, currencyTypeToSymbolMapping } from '../../../models/jobs.models';
 import { useIsMobile } from '../../../hooks/general.hooks';
+import { Icon } from '../../../components/Icon';
+import { IconEnum } from '../../../models/common.models';
 
 
-function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job: ExistingJob | object}) {
-    const jobToRender = (Object.keys(props.job).length) ? props.job : null;
+function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job: ExistingJob}) {
+    let jobToRender = null;
+    if (Object.keys(props.job).length) {
+        const showLabel = (props.job.address || props.job.note) ? <Icon iconEnum={IconEnum.CHEVRON_DOWN} sizeScale={1.5}/> : null;
+        
+        jobToRender = (
+            <>
+                <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
+                <Text fw={400} mb={5} tt='capitalize'>
+                    {props.job.salaryAmount}{currencyTypeToSymbolMapping[props.job.salaryCurrency]} - {props.job.salaryFrequency}
+                </Text>
+                <Spoiler maxHeight={0} showLabel={showLabel} 
+                    hideLabel={<Icon iconEnum={IconEnum.CHEVRON_UP} sizeScale={1.5}/>}
+                    styles={{control: {width: '100%'}}}>
+                    <Group tt={'capitalize'}>
+                        <Text fw={400}>
+                            address:
+                        </Text>
+                        <Text fw={300}>
+                            {props.job.address}
+                        </Text>
+                    </Group>
+                    <Text fw={400} tt='capitalize'>
+                        note:
+                    </Text>
+                    <Text fw={300}>
+                        {props.job.note}
+                    </Text>
+                </Spoiler>
+            </>
+        );
+    }
     
     return (
         <Grid.Col pos={'relative'} span={props.gridSpan}>
-            <Card mih={props.minHeight}>
+            <Card mih={props.minHeight} padding={'lg'}>
                 <LoadingOverlay isLoading={props.isLoading} />
-                {jobToRender ? JSON.stringify(jobToRender) : null}
+                { jobToRender }
             </Card>
         </Grid.Col>);
 }
@@ -22,7 +54,7 @@ function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean }) {
     const isMobile = useIsMobile();
 
     const gridSpan = isMobile ? 3 : 1;
-    const minimumHeight = isMobile ? '50vh': '20vh';
+    const minimumHeight = '20vh';
     
     let jobGrid;
     if (props.isLoading) {
