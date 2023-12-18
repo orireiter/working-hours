@@ -8,7 +8,9 @@ export enum IconEnum {
     MOON,
     BRIEFCASE,
     PLUS,
-    DOWN_ARROW,
+    ARROW_DOWN,
+    CHEVRON_DOWN,
+    CHEVRON_UP,
 }
 
 export enum ColorEnum {
