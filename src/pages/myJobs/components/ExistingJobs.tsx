@@ -7,11 +7,13 @@ import { Icon } from '../../../components/Icon';
 import { IconEnum } from '../../../models/common.models';
 
 
-function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job: ExistingJob}) {
+function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job?: ExistingJob}) {
+
     let jobToRender = null;
-    if (Object.keys(props.job).length) {
-        const showLabel = (props.job.address || props.job.note) ? <Icon iconEnum={IconEnum.CHEVRON_DOWN} sizeScale={1.5}/> : null;
+    if (props.job) {
+        const showLabel = (props.job.address ?? props.job.note) ? <Icon iconEnum={IconEnum.CHEVRON_DOWN} sizeScale={1.5}/> : null;
         
+
         jobToRender = (
             <>
                 <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
@@ -21,7 +23,7 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
                 <Spoiler maxHeight={0} showLabel={showLabel} 
                     hideLabel={<Icon iconEnum={IconEnum.CHEVRON_UP} sizeScale={1.5}/>}
                     styles={{control: {width: '100%'}}}>
-                    <Group tt={'capitalize'}>
+                    <Group tt={'capitalize'} gap={'xs'}>
                         <Text fw={400}>
                             address:
                         </Text>
@@ -60,7 +62,7 @@ function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean }) {
     if (props.isLoading) {
         jobGrid = Array(5).fill({}).map((_: object, index) => {
             return (
-                <GridCell key={index} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} job={_} />    
+                <GridCell key={index} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} />    
             );
         });
     } else {
