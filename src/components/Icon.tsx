@@ -1,4 +1,5 @@
-import { IconExclamationCircle, IconCircleCheck, IconLogout, IconLogin, IconHome, IconMoon, IconSun, IconBriefcase, IconPlus } from '@tabler/icons-react';
+import { IconExclamationCircle, IconCircleCheck, IconLogout, IconLogin, IconHome, IconMoon, 
+    IconSun, IconBriefcase, IconPlus, IconArrowDown, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 
 import { IconEnum, Color } from '../models/common.models';
 
@@ -13,11 +14,15 @@ const enumToComopnent = {
     [IconEnum.MOON]: IconMoon,
     [IconEnum.BRIEFCASE]: IconBriefcase,
     [IconEnum.PLUS]: IconPlus,
+    [IconEnum.ARROW_DOWN]: IconArrowDown,
+    [IconEnum.CHEVRON_DOWN]: IconChevronDown,
+    [IconEnum.CHEVRON_UP]: IconChevronUp,
 };
 
 
-export function Icon(props: { iconEnum: IconEnum, color?: Color }) {
+export function Icon(props: { iconEnum: IconEnum, color?: Color, sizeScale?: number}) {
     const IconComponent = enumToComopnent[props.iconEnum];
 
-    return (<IconComponent stroke={2} color={props.color}/>);
+    
+    return (<IconComponent stroke={2} color={props.color} style={{transform: `scale(${props.sizeScale ?? 1})`}}/>);
 }

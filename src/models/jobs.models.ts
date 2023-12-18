@@ -10,9 +10,15 @@ export enum CurrencySymbolEnum {
 }
 
 
-export const currencyTypeToSymbolMapping: Record<string, CurrencyTypeEnum>= {
+export const currencySymbolToTypeMapping: Record<string, CurrencyTypeEnum>= {
     [CurrencySymbolEnum.NIS]: CurrencyTypeEnum.NIS,
     [CurrencySymbolEnum.USD]: CurrencyTypeEnum.USD
+};
+
+
+export const currencyTypeToSymbolMapping: Record<CurrencyTypeEnum, CurrencySymbolEnum>= {
+    [CurrencyTypeEnum.NIS]: CurrencySymbolEnum.NIS,
+    [CurrencyTypeEnum.USD]: CurrencySymbolEnum.USD
 };
 
 

@@ -1,0 +1,12 @@
+@keyframes moveUpDown {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(2vh); /* Adjust the value to control the distance of the movement */
+    }
+}
+
+.hovering {
+    animation: moveUpDown 1s infinite alternate;
+}
