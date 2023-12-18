@@ -121,7 +121,7 @@ function AddJobButton(props: {openJobForm: () => void, isNoExistingJobs: boolean
         <Stack>
             <Stack display={recommendAddingDisplay} className={styles.hovering} justify='center' align='center' gap={0}>
                 <Text>Click Me!</Text>
-                <Icon iconEnum={IconEnum.DOWN_ARROW} />
+                <Icon iconEnum={IconEnum.ARROW_DOWN} />
             </Stack>
 
             <Button onClick={() => props.openJobForm()}>
