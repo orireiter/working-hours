@@ -1,13 +1,16 @@
-import { Title, Grid, Stack, Card, Text, Group, Spoiler } from '@mantine/core';
+import { Title, Grid, Stack, Card, Text, Group, Spoiler, Button } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { ExistingJob, currencyTypeToSymbolMapping } from '../../../models/jobs.models';
 import { useIsMobile } from '../../../hooks/general.hooks';
 import { Icon } from '../../../components/Icon';
-import { IconEnum } from '../../../models/common.models';
+import { IconEnum, ColorEnum } from '../../../models/common.models';
 
 
 function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job?: ExistingJob}) {
+    const { colorScheme } = useMantineColorScheme();
+    const cardBackground = colorScheme === 'light' ? '#eee' : undefined;
 
     let jobToRender = null;
     if (props.job) {
@@ -16,7 +19,13 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
 
         jobToRender = (
             <>
-                <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
+                <Group justify='space-between'>
+                    <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
+                    <Button bg='transparent' p={0} mb={10}>
+                        <Icon iconEnum={IconEnum.X} color={ColorEnum.RED}/>
+                    </Button>
+                </Group>
+                
                 <Text fw={400} mb={5} tt='capitalize'>
                     {props.job.salaryAmount}{currencyTypeToSymbolMapping[props.job.salaryCurrency]} - {props.job.salaryFrequency}
                 </Text>
@@ -44,7 +53,7 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
     
     return (
         <Grid.Col pos={'relative'} span={props.gridSpan}>
-            <Card mih={props.minHeight} padding={'lg'}>
+            <Card mih={props.minHeight} padding={'lg'} bg={cardBackground}>
                 <LoadingOverlay isLoading={props.isLoading} />
                 { jobToRender }
             </Card>

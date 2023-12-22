@@ -5,8 +5,10 @@ import { NewJob, ExistingJob, RemoteJob } from '../models/jobs.models';
 const jobsTable = supabase.from('jobs');
 
 
-export async function getUserInSessionJobs() {
-    const { data, error } = await jobsTable.select<string, RemoteJob>('*');
+export async function getUserInSessionJobs(isArchivedArray?: boolean[]) {
+    isArchivedArray = isArchivedArray ?? [false];
+
+    const { data, error } = await jobsTable.select<string, RemoteJob>('*').in('is_archived', isArchivedArray);
 
     if (error) { 
         throw new Error('failed to save job');
