@@ -1,27 +1,38 @@
-import { Title, Grid, Stack, Card, Text, Group, Spoiler, Button } from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
+import { Title, Grid, Stack, Card, Text, Group, Spoiler, Button, useMantineColorScheme } from '@mantine/core';
+import { modals } from '@mantine/modals';
 
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { ExistingJob, currencyTypeToSymbolMapping } from '../../../models/jobs.models';
 import { useIsMobile } from '../../../hooks/general.hooks';
+import { useUpdateJobArchiveStatus } from '../../../hooks/jobs.hooks';
 import { Icon } from '../../../components/Icon';
 import { IconEnum, ColorEnum } from '../../../models/common.models';
 
 
-function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job?: ExistingJob}) {
+function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${number}vh`, job?: ExistingJob, refreshExistingJobs: () => void}) {
+    const { togglejobArchiveStatus, isLoading } = useUpdateJobArchiveStatus();
     const { colorScheme } = useMantineColorScheme();
     const cardBackground = colorScheme === 'light' ? '#eee' : undefined;
 
     let jobToRender = null;
     if (props.job) {
         const showLabel = (props.job.address ?? props.job.note) ? <Icon iconEnum={IconEnum.CHEVRON_DOWN} sizeScale={1.5}/> : null;
-        
+        const openModal = () => modals.openConfirmModal({
+            title: 'Please confirm your action',
+            labels: { confirm: 'Confirm', cancel: 'Cancel' },
+            onConfirm: () => {
+                togglejobArchiveStatus(props.job?.id, true)
+                    .then(() => props.refreshExistingJobs())
+                    .catch(() => {});
+            },
+        });
+
 
         jobToRender = (
             <>
                 <Group justify='space-between'>
                     <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
-                    <Button bg='transparent' p={0} mb={10}>
+                    <Button bg='transparent' p={0} mb={10} onClick={openModal}>
                         <Icon iconEnum={IconEnum.X} color={ColorEnum.RED}/>
                     </Button>
                 </Group>
@@ -61,7 +72,7 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
 }
 
 
-function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean }) {
+function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean, refreshExistingJobs: () => void }) {
     const isMobile = useIsMobile();
 
     const gridSpan = isMobile ? 3 : 1;
@@ -90,11 +101,11 @@ function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean }) {
 }
 
 
-export function ExistingJobs(props: { jobs: ExistingJob[], isLoading: boolean }) {
+export function ExistingJobs(props: { jobs: ExistingJob[], isLoading: boolean, refreshExistingJobs: () => void }) {
     return (
         <Stack>
             <Title>My Jobs</Title>
-            <JobGrid jobs={props.jobs} isLoading={props.isLoading}/>
+            <JobGrid jobs={props.jobs} isLoading={props.isLoading} refreshExistingJobs={props.refreshExistingJobs}/>
         </Stack>
     );
 }
