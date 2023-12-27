@@ -11,6 +11,7 @@ export enum IconEnum {
     ARROW_DOWN,
     CHEVRON_DOWN,
     CHEVRON_UP,
+    X
 }
 
 export enum ColorEnum {

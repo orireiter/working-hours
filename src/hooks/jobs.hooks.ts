@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { NewJob, ExistingJob } from '../models/jobs.models';
-import { saveNewJob, getUserInSessionJobs } from '../services/jobs.service';
+import { JobsService } from '../services/jobs.service';
 import { notifyError, notifySuccess } from '../utils/notifications.utils';
 
 
@@ -13,7 +13,7 @@ export function useGetUserJobs() {
         setJobs([]);
         setIsLoading(true);
         try {
-            const jobs = await getUserInSessionJobs();
+            const jobs = await JobsService.Get.getUserInSessionJobs();
             setJobs(jobs);
         } catch (error) { 
             notifyError(error);
@@ -40,7 +40,7 @@ export function useSaveNewJob() {
     const saveJob = async (job: NewJob) => {
         setIsLoading(true);
         try {
-            await saveNewJob(job);
+            await JobsService.Create.saveNewJob(job);
             notifySuccess('job-saved', 'Saved!', 'job added');
         } catch (error) {
             notifyError(error);
@@ -51,6 +51,28 @@ export function useSaveNewJob() {
 
     return {
         saveJob,
+        isLoading
+    };
+}
+
+
+export function useUpdateJobArchiveStatus() {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const togglejobArchiveStatus = async (jobId: string, isArchived: boolean) => {
+        setIsLoading(true);
+        try {
+            await JobsService.Update.updateArchiveStatus(jobId, isArchived);
+            notifySuccess('job-archived', 'Updated!', 'job archive status updated');
+        } catch (error) { 
+            notifyError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return {
+        togglejobArchiveStatus,
         isLoading
     };
 }

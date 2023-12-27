@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { Affix, Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea, Text } from '@mantine/core';
+import { Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea, Text } from '@mantine/core';
 
 import { useIsMobile } from '../../../hooks/general.hooks';
 import { Icon } from '../../../components/Icon';
@@ -8,6 +8,7 @@ import { IconEnum, zIndexEnum } from '../../../models/common.models';
 import { NewJob, SalaryFrequencyEnum, CurrencyTypeEnum, currencySymbolToTypeMapping } from '../../../models/jobs.models';
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { useSaveNewJob } from '../../../hooks/jobs.hooks';
+import { Affix } from '../../../components/Affix';
 
 import styles from './AddNewJob.module.css';
 
@@ -136,7 +137,7 @@ export function AddNewJob(props: {refreshExistingJobs: () => void, isNoExistingJ
     const [isNewJobFormOpened, { open: openJobForm , close }] = useDisclosure(false);
 
     return (
-        <Affix position={{ bottom: 20, right: 20 }} zIndex={addJobZIndex}>
+        <Affix zIndex={addJobZIndex}>
             <AddJobButton openJobForm={openJobForm} isNoExistingJobs={props.isNoExistingJobs}/>
             <NewJobForm isFormOpen={isNewJobFormOpened} closeForm={close} refreshExistingJobs={props.refreshExistingJobs}/>
         </Affix>
