@@ -1,9 +1,9 @@
 import '@mantine/core/styles.css';
-import '@mantine/spotlight/styles.css';
 import '@mantine/notifications/styles.css';
 
 import { JSX } from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -89,8 +89,10 @@ function App() {
         <>
             <ColorSchemeScript defaultColorScheme='auto' />
             <MantineProvider defaultColorScheme='auto'>
-                <Notifications />
-                <AppContent />
+                <ModalsProvider>
+                    <Notifications />
+                    <AppContent />
+                </ModalsProvider>
             </ MantineProvider>
         </>
     );
