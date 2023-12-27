@@ -1,13 +1,12 @@
 import { supabase } from '../thirdParties/supabase';
-
 import { RemoteWorkEvent, ExistingWorkEvent } from '../models/workEvents.models';
 
 
-const workEventsTable = supabase.from('work_events');
+const workEventsTableName = 'work_events';
 
 
 export async function getUserInSessionWorkEvents() {
-    const { data, error } = await workEventsTable.select<string, RemoteWorkEvent>('*');
+    const { data, error } = await supabase.from(workEventsTableName).select<string, RemoteWorkEvent>('*');
 
     if (error) { 
         throw new Error('failed to save job');
