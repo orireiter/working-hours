@@ -9,7 +9,7 @@ export function MyJobs() {
 
     return (
         <>
-            <ExistingJobs jobs={existingJobs} isLoading={isLoadingExistingJobs}/>
+            <ExistingJobs jobs={existingJobs} isLoading={isLoadingExistingJobs} refreshExistingJobs={() => void refreshExistingJobs()}/>
             <AddNewJob refreshExistingJobs={() => void refreshExistingJobs()} isNoExistingJobs={!isLoadingExistingJobs && existingJobs.length === 0}/>
         </>
     );
