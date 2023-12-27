@@ -16,12 +16,13 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
 
     let jobToRender = null;
     if (props.job) {
+        const jobId = props.job.id;
         const showLabel = (props.job.address ?? props.job.note) ? <Icon iconEnum={IconEnum.CHEVRON_DOWN} sizeScale={1.5}/> : null;
         const openModal = () => modals.openConfirmModal({
             title: 'Please confirm your action',
             labels: { confirm: 'Confirm', cancel: 'Cancel' },
             onConfirm: () => {
-                togglejobArchiveStatus(props.job?.id, true)
+                togglejobArchiveStatus(jobId, true)
                     .then(() => props.refreshExistingJobs())
                     .catch(() => {});
             },
@@ -30,6 +31,7 @@ function GridCell(props: {isLoading: boolean, gridSpan: number, minHeight: `${nu
 
         jobToRender = (
             <>
+                <LoadingOverlay isLoading={isLoading} />
                 <Group justify='space-between'>
                     <Text fs={'2em'} fw={600} mb={10}>{props.job.name}</Text>
                     <Button bg='transparent' p={0} mb={10} onClick={openModal}>
@@ -82,13 +84,13 @@ function JobGrid(props: { jobs: ExistingJob[], isLoading: boolean, refreshExisti
     if (props.isLoading) {
         jobGrid = Array(5).fill({}).map((_: object, index) => {
             return (
-                <GridCell key={index} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} />    
+                <GridCell key={index} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} refreshExistingJobs={props.refreshExistingJobs} />    
             );
         });
     } else {
         jobGrid = props.jobs.map(job => {
             return (
-                <GridCell key={job.id} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} job={job} />    
+                <GridCell key={job.id} isLoading={props.isLoading} gridSpan={gridSpan} minHeight={minimumHeight} refreshExistingJobs={props.refreshExistingJobs} job={job} />    
             );
         });
     }
