@@ -1,21 +1,28 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 
 import { JSX } from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { extend as dayjsExtend } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Layout } from './pages/layout/Layout.page';
 import { Home } from './pages/home/Home.page';
 import { Authentication } from './pages/authentication/Authentication.page';
 import { MyJobs } from './pages/myJobs/MyJobs.page';
+import { WorkEvents } from './pages/workEvents/WorkEvents.page';
 import { Loading } from './components/Loading';
 import { Redirect } from './components/Redirect';
 import { useAuthSession } from './hooks/authentication.hooks';
 import { RouteData } from './models/routing.models';
 import { IconEnum } from './models/common.models';
+
+
+dayjsExtend(customParseFormat);
 
 
 const authenticatedRoutes: RouteData[] = [
@@ -34,6 +41,12 @@ const authenticatedRoutes: RouteData[] = [
         iconEnum: IconEnum.BRIEFCASE,
         path: '/jobs',
         element: <MyJobs />,
+    },
+    {
+        name: 'Work Events',
+        iconEnum: IconEnum.TIMELINE,
+        path: '/work_events',
+        element: <WorkEvents />,
     }
 ];
 

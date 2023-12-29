@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea, Text } from '@mantine/core';
@@ -5,9 +6,10 @@ import { Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Sele
 import { useIsMobile } from '../../../hooks/general.hooks';
 import { Icon } from '../../../components/Icon';
 import { IconEnum, zIndexEnum } from '../../../models/common.models';
-import { NewJob, SalaryFrequencyEnum, CurrencyTypeEnum, currencySymbolToTypeMapping } from '../../../models/jobs.models';
+import { SalaryFrequencyEnum, CurrencyTypeEnum, currencySymbolToTypeMapping } from '../../../models/jobs.models';
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
-import { useSaveNewJob } from '../../../hooks/jobs.hooks';
+import { useSaveNewWorkEvent } from '../../../hooks/workEvents.hooks';
+import { NewWorkEvent } from '../../../models/workEvents.models';
 import { Affix } from '../../../components/Affix';
 
 // import styles from './AddNewJob.module.css';
@@ -15,43 +17,56 @@ import { Affix } from '../../../components/Affix';
 
 const addJobZIndex = zIndexEnum.BACK;
 
+/* 
+    jobId: string;
+	startTimestamp: Date;
+	endTimestamp: Date;
+	note?: string;
+	isPaid?: boolean;
+	expectedPaidAmount?: number;
+	actualPaidAmount?: number;
+*/
 
-const newJobFormOptions = {
+const now = dayjs().toDate();
+
+
+const newWorkEventFormOptions = {
     initialValues: {
-        name: '',
-        salaryAmount: 0,
-        salaryCurrency: CurrencyTypeEnum.NIS,
-        salaryFrequency: SalaryFrequencyEnum.HOURLY,
-        address: '',
+        jobId: '',
+        startTimestamp: now,
+        endTimestamp: now,
+        isPaid: false,
+        expectedPaidAmount: 0,
+        actualPaidAmount: 0,
         note: '',
     },
     validate: {
-        name: (value: string) => value.length < 2 ? 'Please enter a valid name' : null,
-        salaryCurrency: (value: string) => !(value in CurrencyTypeEnum),
-        salaryAmount: (value: number) => {
-            if (value < 0) {
-                return 'Salary must be a positive number';
-            }
-        },
+        // name: (value: string) => value.length < 2 ? 'Please enter a valid name' : null,
+        // salaryCurrency: (value: string) => !(value in CurrencyTypeEnum),
+        // salaryAmount: (value: number) => {
+        //     if (value < 0) {
+        //         return 'Salary must be a positive number';
+        //     }
+        // },
     }
 };
 
 
-function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void, refreshExistingJobs?: () => void }) {
+function NewWorkEventForm(props: { isFormOpen: boolean, closeForm: () => void, refreshExistingWorkEvents?: () => void }) {
     const isMobile = useIsMobile();
-    const { saveJob, isLoading } = useSaveNewJob();
+    const { saveWorkEvent, isLoading } = useSaveNewWorkEvent();
 
-    const form = useForm<NewJob>(newJobFormOptions);
+    const form = useForm<NewWorkEvent>(newWorkEventFormOptions);
     const currencies = Object.entries(currencySymbolToTypeMapping).map((currencyData) => {
         return {label: currencyData[0], value: currencyData[1]};
     });
 
     const onSubmit = form.onSubmit((values) => {
-        saveJob(values)
+        saveWorkEvent(values)
             .then(() => {
                 props.closeForm();
-                if (props.refreshExistingJobs) {
-                    props.refreshExistingJobs();
+                if (props.refreshExistingWorkEvents) {
+                    props.refreshExistingWorkEvents();
                 }
             })
             .catch(() => {});
@@ -116,16 +131,16 @@ function NewJobForm(props: { isFormOpen: boolean, closeForm: () => void, refresh
 }
 
 
-function AddJobButton(props: {openJobForm: () => void, isNoExistingJobs: boolean}) {
-    const recommendAddingDisplay = props.isNoExistingJobs ? 'flex' : 'none';
+function AddWorkEventButton(props: {openWorkEventForm: () => void, isNoExistingWorkEvents: boolean}) {
+    const recommendAddingDisplay = props.isNoExistingWorkEvents ? 'flex' : 'none';
     return (
         <Stack>
-            <Stack display={recommendAddingDisplay} className={styles.hovering} justify='center' align='center' gap={0}>
+            <Stack display={recommendAddingDisplay} /*className={styles.hovering}*/ justify='center' align='center' gap={0}>
                 <Text>Click Me!</Text>
                 <Icon iconEnum={IconEnum.ARROW_DOWN} />
             </Stack>
 
-            <Button onClick={() => props.openJobForm()}>
+            <Button onClick={() => props.openWorkEventForm()}>
                 <Icon iconEnum={IconEnum.PLUS} />
             </Button>
         </Stack>
@@ -133,13 +148,13 @@ function AddJobButton(props: {openJobForm: () => void, isNoExistingJobs: boolean
 }
 
 
-export function AddNewJob(props: {refreshExistingJobs: () => void, isNoExistingJobs: boolean}){
-    const [isNewJobFormOpened, { open: openJobForm , close }] = useDisclosure(false);
+export function AddNewWorkEvent(props: {refreshExistingWorkEvents: () => void, isNoExistingWorkEvents: boolean}){
+    const [isNewWorkEventFormOpened, { open: openWorkEventForm , close }] = useDisclosure(false);
 
     return (
         <Affix zIndex={addJobZIndex}>
-            <AddJobButton openJobForm={openJobForm} isNoExistingJobs={props.isNoExistingJobs}/>
-            <NewJobForm isFormOpen={isNewJobFormOpened} closeForm={close} refreshExistingJobs={props.refreshExistingJobs}/>
+            <AddWorkEventButton openWorkEventForm={openWorkEventForm} isNoExistingWorkEvents={props.isNoExistingWorkEvents}/>
+            <NewWorkEventForm isFormOpen={isNewWorkEventFormOpened} closeForm={close} refreshExistingWorkEvents={props.refreshExistingWorkEvents}/>
         </Affix>
     );
 }

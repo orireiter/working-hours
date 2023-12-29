@@ -1,5 +1,6 @@
 import { IconExclamationCircle, IconCircleCheck, IconLogout, IconLogin, IconHome, IconMoon, 
-    IconSun, IconBriefcase, IconPlus, IconArrowDown, IconChevronDown, IconChevronUp, IconX } from '@tabler/icons-react';
+    IconSun, IconBriefcase, IconPlus, IconArrowDown, IconChevronDown, IconChevronUp, IconX, 
+    IconTimeline } from '@tabler/icons-react';
 
 import { IconEnum, Color } from '../models/common.models';
 
@@ -18,6 +19,7 @@ const enumToComopnent = {
     [IconEnum.CHEVRON_DOWN]: IconChevronDown,
     [IconEnum.CHEVRON_UP]: IconChevronUp,
     [IconEnum.X]: IconX,
+    [IconEnum.TIMELINE]: IconTimeline
 };
 
 
