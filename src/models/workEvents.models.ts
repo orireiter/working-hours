@@ -18,4 +18,13 @@ export interface ExistingWorkEvent extends NewWorkEvent {
 export interface RemoteWorkEvent {
     id: number;
     created_at: Date;
+    user_id: string;
+    job_id: string;
+    start_timestamp: Date;
+    end_timestamp: Date;
+    note?: string;
+    is_paid?: boolean;
+    expected_paid_amount?: number;
+    actual_paid_amount?: number;
+    is_archived?: boolean;
 }
