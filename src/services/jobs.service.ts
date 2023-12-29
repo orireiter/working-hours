@@ -2,7 +2,7 @@ import { supabase } from '../thirdParties/supabase';
 import { NewJob, ExistingJob, RemoteJob } from '../models/jobs.models';
 
 
-const jobsTableName= 'jobs';
+const tableName= 'jobs';
 
 
 export class JobsService {
@@ -10,7 +10,7 @@ export class JobsService {
         static async getUserInSessionJobs(isArchivedArray?: boolean[]) {
             isArchivedArray = isArchivedArray ?? [false];
         
-            const { data, error } = await supabase.from(jobsTableName).select<string, RemoteJob>('*').in('is_archived', isArchivedArray);
+            const { data, error } = await supabase.from(tableName).select<string, RemoteJob>('*').in('is_archived', isArchivedArray);
         
             if (error) { 
                 throw new Error('failed to save job');
@@ -52,7 +52,7 @@ export class JobsService {
             }
         
         
-            const { data, error } = await supabase.from(jobsTableName).insert([remoteJob,]).select<string, RemoteJob>('id');
+            const { data, error } = await supabase.from(tableName).insert([remoteJob,]).select<string, RemoteJob>('id');
         
             if (error) { 
                 throw new Error('failed to save job');
@@ -66,7 +66,7 @@ export class JobsService {
 
     static Update = class {
         static async updateArchiveStatus(jobId: string, newArchiveStatus: boolean) {
-            const { data, error } = await supabase.from(jobsTableName).update({is_archived: newArchiveStatus})
+            const { data, error } = await supabase.from(tableName).update({is_archived: newArchiveStatus})
                 .eq('id', +jobId).select<string, RemoteJob>();
 
             if (error) {
