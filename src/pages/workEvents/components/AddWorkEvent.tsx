@@ -1,32 +1,24 @@
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { Button, Center, Modal, Stack, TextInput, NumberInput, Flex, Space, Select, Textarea, Text } from '@mantine/core';
+import { DateTimePicker } from '@mantine/dates';
+import { Checkbox, Divider, Button, Center, Modal, Stack, NumberInput, Flex, Space, Textarea, 
+    Text, Select } from '@mantine/core';
 
-import { useIsMobile } from '../../../hooks/general.hooks';
 import { Icon } from '../../../components/Icon';
 import { IconEnum, zIndexEnum } from '../../../models/common.models';
-import { SalaryFrequencyEnum, CurrencyTypeEnum, currencySymbolToTypeMapping } from '../../../models/jobs.models';
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { useSaveNewWorkEvent } from '../../../hooks/workEvents.hooks';
 import { NewWorkEvent } from '../../../models/workEvents.models';
 import { Affix } from '../../../components/Affix';
 import styles from '../../../index.module.css';
+import { ExistingJob } from '../../../models/jobs.models';
 
-// import styles from './AddNewJob.module.css';
 
 
 const addJobZIndex = zIndexEnum.BACK;
 
-/* 
-    jobId: string;
-	startTimestamp: Date;
-	endTimestamp: Date;
-	note?: string;
-	isPaid?: boolean;
-	expectedPaidAmount?: number;
-	actualPaidAmount?: number;
-*/
 
 const now = dayjs().toDate();
 
@@ -42,25 +34,26 @@ const newWorkEventFormOptions = {
         note: '',
     },
     validate: {
-        // name: (value: string) => value.length < 2 ? 'Please enter a valid name' : null,
-        // salaryCurrency: (value: string) => !(value in CurrencyTypeEnum),
-        // salaryAmount: (value: number) => {
-        //     if (value < 0) {
-        //         return 'Salary must be a positive number';
-        //     }
-        // },
+        expectedPaidAmount: (value?: number) => value && value < 0 ? 'cant be negative' : null,
+        actualPaidAmount: (value?: number) => value && value< 0 ? 'cant be negative' : null,
     }
 };
 
 
-function NewWorkEventForm(props: { isFormOpen: boolean, closeForm: () => void, refreshExistingWorkEvents?: () => void }) {
-    const isMobile = useIsMobile();
+function NewWorkEventForm(props: { isFormOpen: boolean, closeForm: () => void, refreshExistingWorkEvents?: () => void, jobs: ExistingJob[]}) {
     const { saveWorkEvent, isLoading } = useSaveNewWorkEvent();
-
     const form = useForm<NewWorkEvent>(newWorkEventFormOptions);
-    const currencies = Object.entries(currencySymbolToTypeMapping).map((currencyData) => {
-        return {label: currencyData[0], value: currencyData[1]};
-    });
+    const [currentJob, setCurrentJob] = useState<ExistingJob>();
+
+    useEffect(() => {
+        if (!currentJob) {
+            return;
+        }
+
+        form.setFieldValue('jobId', currentJob.id);
+        form.setFieldValue('expectedPaidAmount', currentJob.salaryAmount);
+        form.setFieldValue('actualPaidAmount', currentJob.salaryAmount);
+    }, [currentJob]);
 
     const onSubmit = form.onSubmit((values) => {
         saveWorkEvent(values)
@@ -74,46 +67,56 @@ function NewWorkEventForm(props: { isFormOpen: boolean, closeForm: () => void, r
     });
 
     return (
-        <Modal opened={props.isFormOpen} onClose={props.closeForm} title='Add New Job'>
+        <Modal opened={props.isFormOpen} onClose={props.closeForm} title='Add Work'>
             <LoadingOverlay isLoading={isLoading} zIndex={zIndexEnum.MIDDLE}/>
             <form onSubmit={onSubmit}>
                 <Stack>
-                    <TextInput
-                        type='text'
-                        label='Name'
+                    <Select 
+                        label='Job'
                         placeholder='Job Name'
-                        {...form.getInputProps('name')}
+                        data={props.jobs.map(job => job.name)}
+                        onChange={(value => setCurrentJob(props.jobs.find(job => job.name === value)))}
+                        searchable
                     />
+                    <Divider />
                     <Flex columnGap={'sm'} align={'center'} style={{justifyContent: 'space-between'}}>
-                        <NumberInput 
-                            w={isMobile ? '60%' : '70%'}
-                            label='Salary'
+                        <DateTimePicker 
+                            required
+                            w={'50%'}
+                            label='Start Time' 
+                            placeholder='Pick date and time' 
+                            {...form.getInputProps('startTimestamp')}
+                        />
+                        <DateTimePicker 
+                            required
+                            w={'50%'}
+                            label='End Time' 
+                            placeholder='Pick date and time' 
+                            {...form.getInputProps('endTimestamp')}
+                        />
+                    </Flex>
+                    <Divider />
+                    <Flex columnGap={'sm'} align={'center'} style={{justifyContent: 'space-between'}}>
+                        <NumberInput
+                            label='Expected Pay'
                             min={0}
                             decimalSeparator='.'
                             thousandSeparator=','
-                            {...form.getInputProps('salaryAmount')}
+                            {...form.getInputProps('expectedPaidAmount')}
                         />
-                        <Select 
-                            w={isMobile ? '30%' : '20%'}
-                            label='Currency'
-                            data={currencies}
-                            searchable
-                            error={form.errors.salaryCurrency}
-                            {...form.getInputProps('salaryCurrency')}
+                        <NumberInput
+                            label='Actual Pay'
+                            min={0}
+                            decimalSeparator='.'
+                            thousandSeparator=','
+                            {...form.getInputProps('actualPaidAmount')}
                         />
                     </Flex>
-                    <Select 
-                        label='My salary is'
-                        data={Object.values(SalaryFrequencyEnum)}
-                        {...form.getInputProps('salaryFrequency')}
-                        searchable
+                    <Checkbox 
+                        label='Was paid'
+                        {...form.getInputProps('isPaid')}
                     />
-                    <TextInput
-                        type='text'
-                        label='Address (optional)'
-                        placeholder='address'
-                        {...form.getInputProps('address')}
-                    />
+                    <Divider />
                     <Textarea 
                         label='notes (optional)'
                         placeholder='...'
@@ -149,13 +152,14 @@ function AddWorkEventButton(props: {openWorkEventForm: () => void, isNoExistingW
 }
 
 
-export function AddNewWorkEvent(props: {refreshExistingWorkEvents: () => void, isNoExistingWorkEvents: boolean}){
+export function AddNewWorkEvent(props: {jobs: ExistingJob[], refreshExistingWorkEvents: () => void, isNoExistingWorkEvents: boolean}){
     const [isNewWorkEventFormOpened, { open: openWorkEventForm , close }] = useDisclosure(false);
 
+    console.log(props.jobs);
     return (
         <Affix zIndex={addJobZIndex}>
             <AddWorkEventButton openWorkEventForm={openWorkEventForm} isNoExistingWorkEvents={props.isNoExistingWorkEvents}/>
-            <NewWorkEventForm isFormOpen={isNewWorkEventFormOpened} closeForm={close} refreshExistingWorkEvents={props.refreshExistingWorkEvents}/>
+            <NewWorkEventForm isFormOpen={isNewWorkEventFormOpened} closeForm={close} refreshExistingWorkEvents={props.refreshExistingWorkEvents} jobs={props.jobs}/>
         </Affix>
     );
 }
