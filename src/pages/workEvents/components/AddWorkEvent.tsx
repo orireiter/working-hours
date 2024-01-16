@@ -11,6 +11,7 @@ import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { useSaveNewWorkEvent } from '../../../hooks/workEvents.hooks';
 import { NewWorkEvent } from '../../../models/workEvents.models';
 import { Affix } from '../../../components/Affix';
+import styles from '../../../index.module.css';
 
 // import styles from './AddNewJob.module.css';
 
@@ -135,7 +136,7 @@ function AddWorkEventButton(props: {openWorkEventForm: () => void, isNoExistingW
     const recommendAddingDisplay = props.isNoExistingWorkEvents ? 'flex' : 'none';
     return (
         <Stack>
-            <Stack display={recommendAddingDisplay} /*className={styles.hovering}*/ justify='center' align='center' gap={0}>
+            <Stack display={recommendAddingDisplay} className={styles.hovering} justify='center' align='center' gap={0}>
                 <Text>Click Me!</Text>
                 <Icon iconEnum={IconEnum.ARROW_DOWN} />
             </Stack>
