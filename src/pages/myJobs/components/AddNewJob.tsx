@@ -9,8 +9,7 @@ import { NewJob, SalaryFrequencyEnum, CurrencyTypeEnum, currencySymbolToTypeMapp
 import { LoadingOverlay } from '../../../components/LoadingOverlay';
 import { useSaveNewJob } from '../../../hooks/jobs.hooks';
 import { Affix } from '../../../components/Affix';
-
-import styles from './AddNewJob.module.css';
+import styles from '../../../index.module.css';
 
 
 const addJobZIndex = zIndexEnum.BACK;
