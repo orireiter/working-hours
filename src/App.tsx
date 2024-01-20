@@ -14,6 +14,7 @@ import { Layout } from './pages/layout/Layout.page';
 import { Home } from './pages/home/Home.page';
 import { Authentication } from './pages/authentication/Authentication.page';
 import { MyJobs } from './pages/myJobs/MyJobs.page';
+import { WorkEvents } from './pages/workEvents/WorkEvents.page';
 import { Loading } from './components/Loading';
 import { Redirect } from './components/Redirect';
 import { useAuthSession } from './hooks/authentication.hooks';
@@ -40,6 +41,12 @@ const authenticatedRoutes: RouteData[] = [
         iconEnum: IconEnum.BRIEFCASE,
         path: '/jobs',
         element: <MyJobs />,
+    },
+    {
+        name: 'Work Events',
+        iconEnum: IconEnum.TIMELINE,
+        path: '/work_events',
+        element: <WorkEvents />,
     }
 ];
 

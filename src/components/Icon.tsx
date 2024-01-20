@@ -1,5 +1,5 @@
 import { IconExclamationCircle, IconCircleCheck, IconLogout, IconLogin, IconHome, IconMoon, 
-    IconSun, IconBriefcase, IconPlus, IconArrowDown, IconChevronDown, IconChevronUp, IconX,
+    IconSun, IconBriefcase, IconPlus, IconArrowDown, IconChevronDown, IconChevronUp, IconX, 
     IconTimeline } from '@tabler/icons-react';
 
 import { IconEnum, Color } from '../models/common.models';
