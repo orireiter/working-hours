@@ -155,7 +155,6 @@ function AddWorkEventButton(props: {openWorkEventForm: () => void, isNoExistingW
 export function AddNewWorkEvent(props: {jobs: ExistingJob[], refreshExistingWorkEvents: () => void, isNoExistingWorkEvents: boolean}){
     const [isNewWorkEventFormOpened, { open: openWorkEventForm , close }] = useDisclosure(false);
 
-    console.log(props.jobs);
     return (
         <Affix zIndex={addJobZIndex}>
             <AddWorkEventButton openWorkEventForm={openWorkEventForm} isNoExistingWorkEvents={props.isNoExistingWorkEvents}/>

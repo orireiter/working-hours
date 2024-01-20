@@ -13,6 +13,8 @@ export enum IconEnum {
     CHEVRON_UP,
     X,
     TIMELINE,
+    CASH,
+    CASH_OFF
 }
 
 export enum ColorEnum {

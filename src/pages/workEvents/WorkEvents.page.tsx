@@ -11,7 +11,7 @@ export function WorkEvents() {
 
     return (
         <>
-            <WorkTimeline />
+            <WorkTimeline workEvents={workEvents}/>
             <AddNewWorkEvent jobs={jobs} refreshExistingWorkEvents={() => void refreshWorkEvents()} isNoExistingWorkEvents={!isLoading && workEvents.length === 0}/>
         </>
     );
